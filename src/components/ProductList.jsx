@@ -1,7 +1,8 @@
 import React from 'react';
 import toast from 'react-hot-toast';
+import { ShimmerThumbnail } from 'react-shimmer-effects'; // Import shimmer component
 
-const ProductList = ({ products, addToCart }) => {
+const ProductList = ({ products, addToCart, loading }) => { // Add loading prop
   const handleAddToCart = (productId, productName) => {
     addToCart(productId);
     toast.success(`${productName} added to cart`, {
@@ -13,11 +14,11 @@ const ProductList = ({ products, addToCart }) => {
       },
     });
   };
+
   const [loadingStates, setLoadingStates] = React.useState({});
 
   const handleButtonClick = async (productId, productName) => {
     setLoadingStates(prev => ({ ...prev, [productId]: true }));
-    // Simulate delay
     await new Promise(resolve => setTimeout(resolve, 500));
     handleAddToCart(productId, productName);
     setLoadingStates(prev => ({ ...prev, [productId]: false }));
@@ -28,7 +29,13 @@ const ProductList = ({ products, addToCart }) => {
       <h2 className="text-3xl font-bold mb-8 text-teal-700 text-center">
         Our Featured Products
       </h2>
-      {products.length === 0 ? (
+      {loading ? ( // Show shimmer when loading
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(6)].map((_, index) => ( // Simulate 6 placeholders
+            <ShimmerThumbnail key={index} height={350} width={300} rounded />
+          ))}
+        </div>
+      ) : products.length === 0 ? (
         <p className="text-gray-500 text-center text-lg">No products found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

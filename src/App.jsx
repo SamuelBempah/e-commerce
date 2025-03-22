@@ -10,6 +10,7 @@ function App() {
   const [cart, setCart] = useState([]);
   const [orders, setOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchProducts();
@@ -18,13 +19,18 @@ function App() {
   }, []);
 
   const fetchProducts = async () => {
+    setLoading(true); // Start loading
     try {
       const response = await axios.get('http://localhost:3000/products', {
         params: { name: searchTerm },
       });
       setProducts(response.data);
+      // Add delay before stopping loading
+      await new Promise(resolve => setTimeout(resolve, 2000)); // 2-second delay
     } catch (error) {
       console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false); // Stop loading after delay
     }
   };
 
@@ -139,7 +145,7 @@ function App() {
       <main className="container mx-auto py-8 px-4">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-3">
-            <ProductList products={products} addToCart={addToCart} />
+            <ProductList products={products} addToCart={addToCart} loading={loading} />
             <div className="mt-8 bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-xl font-semibold mb-4 text-teal-700">Add New Product</h2>
               <form

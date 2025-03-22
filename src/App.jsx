@@ -26,7 +26,7 @@ function App() {
       });
       setProducts(response.data);
       // Add delay before stopping loading
-      await new Promise(resolve => setTimeout(resolve, 2000)); // 2-second delay
+      await new Promise(resolve => setTimeout(resolve, 5000)); // 5-second delay
     } catch (error) {
       console.error('Error fetching products:', error);
     } finally {

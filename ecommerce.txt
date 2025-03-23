@@ -1,10 +1,10 @@
-Below is a detailed, line-by-line explanation of all the files in your e-commerce system—starting with `server.js`, followed by the updated JSX files (`Cart.jsx`, `Orders.jsx`, `ProductList.jsx`, and `App.jsx`, with `index.jsx` last since it’s short). I’ve formatted it in a notes-style structure, perfect for copying into a notes app. Each line is numbered and explained based on your latest codebase.
+Below is the updated version of the notes you requested earlier, now including the addition of `react-shimmer-effects` as imported and used in your codebase. I’ve modified the relevant sections for `App.jsx` and `ProductList.jsx` to reflect the changes from the latest code (with the shimmer effect and 2-second delay). The notes for `server.js`, `Cart.jsx`, `Orders.jsx`, and `index.jsx` remain unchanged since they weren’t affected. This is formatted for your notes app, with line-by-line explanations.
 
 ---
 
 ### Notes: `server.js`
 
-- **Purpose**: This is the backend server using Node.js, handling product, cart, and order data in-memory and serving it via HTTP endpoints.
+- **Purpose**: Backend server using Node.js, handling product, cart, and order data in-memory via HTTP endpoints.
 
 1. `import http from "node:http";`
    - Imports the built-in `http` module to create an HTTP server.
@@ -727,262 +727,283 @@ Below is a detailed, line-by-line explanation of all the files in your e-commerc
 
 ### Notes: `ProductList.jsx`
 
-- **Purpose**: Displays products with images and "Add to Cart" buttons, with loading states.
+- **Purpose**: Displays products with images and "Add to Cart" buttons, includes shimmer effects for loading states.
 
 1. `import React from 'react';`
-   - Imports React.
+   - Imports React for component functionality.
 
 2. `import toast from 'react-hot-toast';`
-   - Imports `toast` for notifications.
+   - Imports `toast` for success notifications.
 
-3. `const ProductList = ({ products, addToCart }) => {`
-   - Defines `ProductList` with props: `products` (array), `addToCart` (function).
+3. `import { ShimmerThumbnail } from 'react-shimmer-effects';`
+   - Imports `ShimmerThumbnail` from `react-shimmer-effects` for loading placeholders.
 
-4. `const handleAddToCart = (productId, productName) => {`
+4. `const ProductList = ({ products, addToCart, loading }) => {`
+   - Defines `ProductList` with props: `products` (array), `addToCart` (function), `loading` (boolean for fetch status).
+
+5. `const handleAddToCart = (productId, productName) => {`
    - Defines function to add item to cart.
 
-5. `addToCart(productId);`
+6. `addToCart(productId);`
    - Calls `addToCart` prop (triggers `POST /cart` in `server.js`).
 
-6. `toast.success(`${productName} added to cart`, {`
+7. `toast.success(`${productName} added to cart`, {`
    - Shows success toast.
 
-7. `duration: 3000,`
+8. `duration: 3000,`
    - Sets duration to 3 seconds.
 
-8. `position: 'top-center',`
+9. `position: 'top-center',`
    - Positions toast.
 
-9. `style: {`
-   - Starts style object.
+10. `style: {`
+    - Starts style object.
 
-10. `background: '#0d9488',`
+11. `background: '#0d9488',`
     - Sets teal background.
 
-11. `color: '#ffffff',`
+12. `color: '#ffffff',`
     - Sets white text.
 
-12. `},`
+13. `},`
     - Closes style.
 
-13. `});`
+14. `});`
     - Closes toast.
 
-14. `};`
+15. `};`
     - Closes `handleAddToCart`.
 
-15. `const [loadingStates, setLoadingStates] = React.useState({});`
-    - Declares state for loading indicators, initially empty.
+16. `const [loadingStates, setLoadingStates] = React.useState({});`
+    - Declares state for button loading indicators, initially empty.
 
-16. `const handleButtonClick = async (productId, productName) => {`
+17. `const handleButtonClick = async (productId, productName) => {`
     - Defines async function for button clicks.
 
-17. `setLoadingStates(prev => ({ ...prev, [productId]: true }));`
+18. `setLoadingStates(prev => ({ ...prev, [productId]: true }));`
     - Sets loading state to true for the product ID.
 
-18. `await new Promise(resolve => setTimeout(resolve, 500));`
-    - Simulates 500ms delay.
+19. `await new Promise(resolve => setTimeout(resolve, 500));`
+    - Simulates 500ms delay for button action.
 
-19. `handleAddToCart(productId, productName);`
+20. `handleAddToCart(productId, productName);`
     - Calls `handleAddToCart`.
 
-20. `setLoadingStates(prev => ({ ...prev, [productId]: false }));`
+21. `setLoadingStates(prev => ({ ...prev, [productId]: false }));`
     - Resets loading state.
 
-21. `};`
+22. `};`
     - Closes `handleButtonClick`.
 
-22. `return (`
+23. `return (`
     - Starts JSX return.
 
-23. `<div className="container mx-auto px-4 max-w-6xl">`
+24. `<div className="container mx-auto px-4 max-w-6xl">`
     - Container with centered content, padding, and max width.
 
-24. `<h2 className="text-3xl font-bold mb-8 text-teal-700 text-center">`
+25. `<h2 className="text-3xl font-bold mb-8 text-teal-700 text-center">`
     - Heading for product list.
 
-25. `Our Featured Products`
+26. `Our Featured Products`
     - Heading text.
 
-26. `</h2>`
+27. `</h2>`
     - Closes heading.
 
-27. `{products.length === 0 ? (`
-    - Ternary: if no products.
+28. `{loading ? (`
+    - Ternary: if `loading` is true (fetching products).
 
-28. `<p className="text-gray-500 text-center text-lg">No products found.</p>`
+29. `<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">`
+    - Grid layout matching product display.
+
+30. `{[...Array(6)].map((_, index) => (`
+    - Creates 6 shimmer placeholders using an array.
+
+31. `<ShimmerThumbnail key={index} height={350} width={300} rounded />`
+    - Renders a shimmer effect: 350px tall, 300px wide, rounded corners.
+
+32. `))}`
+    - Closes shimmer map.
+
+33. `</div>`
+    - Closes shimmer grid.
+
+34. `) : products.length === 0 ? (`
+    - Else-if: if not loading and no products.
+
+35. `<p className="text-gray-500 text-center text-lg">No products found.</p>`
     - Shows message if empty.
 
-29. `) : (`
-    - Else block.
+36. `) : (`
+    - Else: if not loading and products exist.
 
-30. `<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">`
+37. `<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">`
     - Responsive grid for products.
 
-31. `{products.map((product) => (`
+38. `{products.map((product) => (`
     - Maps over products.
 
-32. `<div`
+39. `<div`
     - Starts product card.
 
-33. `key={product.id}`
+40. `key={product.id}`
     - Unique key for React.
 
-34. `className="bg-white p-4 rounded-xl shadow-sm hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300"`
+41. `className="bg-white p-4 rounded-xl shadow-sm hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300"`
     - Styles card: white, padding, shadow, hover effects.
 
-35. `>`
+42. `>`
     - Opens card content.
 
-36. `<div className="relative overflow-hidden rounded-lg mb-3">`
+43. `<div className="relative overflow-hidden rounded-lg mb-3">`
     - Container for image with overflow handling.
 
-37. `<img`
+44. `<img`
     - Starts image.
 
-38. `src={product.image}`
+45. `src={product.image}`
     - Sets image URL.
 
-39. `alt={product.name}`
+46. `alt={product.name}`
     - Sets alt text.
 
-40. `className="w-full h-60 object-contain hover:scale-105 transition-transform duration-300"`
+47. `className="w-full h-60 object-contain hover:scale-105 transition-transform duration-300"`
     - Styles image: full width, 240px height, contained, zoom on hover.
 
-41. `/>`
+48. `/>`
     - Closes image.
 
-42. `</div>`
+49. `</div>`
     - Closes image container.
 
-43. `<h3 className="text-lg font-bold text-gray-800 mb-2">{product.name}</h3>`
+50. `<h3 className="text-lg font-bold text-gray-800 mb-2">{product.name}</h3>`
     - Shows product name.
 
-44. `<div className="flex items-center mb-2">`
+51. `<div className="flex items-center mb-2">`
     - Container for category.
 
-45. `<span className="px-3 py-1 bg-teal-100 text-teal-800 rounded-full text-sm">`
+52. `<span className="px-3 py-1 bg-teal-100 text-teal-800 rounded-full text-sm">`
     - Styled category tag.
 
-46. `{product.category}`
+53. `{product.category}`
     - Shows category.
 
-47. `</span>`
+54. `</span>`
     - Closes tag.
 
-48. `</div>`
+55. `</div>`
     - Closes category container.
 
-49. `<p className="text-xl font-bold text-teal-600 mb-3">`
+56. `<p className="text-xl font-bold text-teal-600 mb-3">`
     - Starts price.
 
-50. `GHS {product.price.toFixed(2)}`
+57. `GHS {product.price.toFixed(2)}`
     - Shows price in GHS.
 
-51. `</p>`
+58. `</p>`
     - Closes price.
 
-52. `<button`
+59. `<button`
     - Starts "Add to Cart" button.
 
-53. `onClick={() => handleButtonClick(product.id, product.name)}`
+60. `onClick={() => handleButtonClick(product.id, product.name)}`
     - Calls `handleButtonClick`.
 
-54. `disabled={loadingStates[product.id]}`
+61. `disabled={loadingStates[product.id]}`
     - Disables button if loading.
 
-55. `className="w-full bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 transform hover:scale-[1.02] transition-all duration-300 font-semibold"`
+62. `className="w-full bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 transform hover:scale-[1.02] transition-all duration-300 font-semibold"`
     - Styles button: teal, full-width, hover effects.
 
-56. `>`
+63. `>`
     - Opens button content.
 
-57. `{loadingStates[product.id] ? (`
-    - Ternary: if loading.
+64. `{loadingStates[product.id] ? (`
+    - Ternary: if button is loading.
 
-58. `<svg className="animate-spin h-5 w-5 mr-2 inline" viewBox="0 0 24 24">`
+65. `<svg className="animate-spin h-5 w-5 mr-2 inline" viewBox="0 0 24 24">`
     - Spinner SVG.
 
-59. `<circle`
+66. `<circle`
     - Starts spinner circle.
 
-60. `className="opacity-25"`
+67. `className="opacity-25"`
     - Sets circle opacity.
 
-61. `cx="12"`
+68. `cx="12"`
     - Centers circle x.
 
-62. `cy="12"`
+69. `cy="12"`
     - Centers circle y.
 
-63. `r="10"`
+70. `r="10"`
     - Sets circle radius.
 
-64. `stroke="currentColor"`
+71. `stroke="currentColor"`
     - Uses current color for stroke.
 
-65. `strokeWidth="4"`
+72. `strokeWidth="4"`
     - Sets stroke width.
 
-66. `fill="none"`
+73. `fill="none"`
     - No fill for circle.
 
-67. `/>`
+74. `/>`
     - Closes circle.
 
-68. `<path`
+75. `<path`
     - Starts spinner path.
 
-69. `className="opacity-75"`
+76. `className="opacity-75"`
     - Sets path opacity.
 
-70. `fill="currentColor"`
+77. `fill="currentColor"`
     - Fills path with current color.
 
-71. `d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"`
+78. `d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"`
     - Defines spinner animation path.
 
-72. `/>`
+79. `/>`
     - Closes path.
 
-73. `</svg>`
+80. `</svg>`
     - Closes spinner.
 
-74. `) : 'Add to Cart'}`
+81. `) : 'Add to Cart'}`
     - Shows "Add to Cart" if not loading.
 
-75. `</button>`
+82. `</button>`
     - Closes button.
 
-76. `</div>`
+83. `</div>`
     - Closes product card.
 
-77. `))}`
+84. `))}`
     - Closes map.
 
-78. `</div>`
+85. `</div>`
     - Closes grid.
 
-79. `)}`
+86. `)}`
     - Closes ternary.
 
-80. `</div>`
+87. `</div>`
     - Closes outer div.
 
-81. `);`
+88. `);`
     - Closes return.
 
-82. `};`
+89. `};`
     - Closes component.
 
-83. `export default ProductList;`
+90. `export default ProductList;`
     - Exports `ProductList`.
 
 ---
 
 ### Notes: `App.jsx`
 
-- **Purpose**: Main component managing state, fetching data, and rendering the UI with a hero section.
+- **Purpose**: Main component managing state, fetching data, and rendering the UI with a hero section and shimmer loading.
 
 1. `import { useState, useEffect } from 'react';`
    - Imports React hooks: `useState` for state, `useEffect` for side effects.
@@ -1017,532 +1038,547 @@ Below is a detailed, line-by-line explanation of all the files in your e-commerc
 11. `const [searchTerm, setSearchTerm] = useState('');`
     - State for search term, initially empty.
 
-12. `useEffect(() => {`
+12. `const [loading, setLoading] = useState(true);`
+    - State for loading status, initially true (shows shimmer on mount).
+
+13. `useEffect(() => {`
     - Sets up effect to run on mount.
 
-13. `fetchProducts();`
+14. `fetchProducts();`
     - Calls `fetchProducts` to load products.
 
-14. `fetchCart();`
+15. `fetchCart();`
     - Calls `fetchCart` to load cart.
 
-15. `fetchOrders();`
+16. `fetchOrders();`
     - Calls `fetchOrders` to load orders.
 
-16. `}, []);`
+17. `}, []);`
     - Empty dependency array: runs once on mount.
 
-17. `const fetchProducts = async () => {`
+18. `const fetchProducts = async () => {`
     - Defines async function to fetch products.
 
-18. `try {`
+19. `setLoading(true);`
+    - Sets `loading` to true to show shimmer.
+
+20. `try {`
     - Starts error handling.
 
-19. `const response = await axios.get('http://localhost:3000/products', {`
+21. `const response = await axios.get('http://localhost:3000/products', {`
     - Sends `GET` request to `/products` in `server.js`.
 
-20. `params: { name: searchTerm },`
+22. `params: { name: searchTerm },`
     - Adds search term as query param.
 
-21. `});`
+23. `});`
     - Closes request options.
 
-22. `setProducts(response.data);`
+24. `setProducts(response.data);`
     - Updates `products` state with response.
 
-23. `} catch (error) {`
+25. `await new Promise(resolve => setTimeout(resolve, 2000));`
+    - Adds a 2-second delay to keep shimmer visible.
+
+26. `} catch (error) {`
     - Catches errors.
 
-24. `console.error('Error fetching products:', error);`
+27. `console.error('Error fetching products:', error);`
     - Logs errors.
 
-25. `}`
-    - Ends try-catch.
+28. `} finally {`
+    - Runs regardless of success or failure.
 
-26. `};`
+29. `setLoading(false);`
+    - Sets `loading` to false after delay, hiding shimmer.
+
+30. `}`
+    - Ends try-catch-finally.
+
+31. `};`
     - Closes `fetchProducts`.
 
-27. `const fetchCart = async () => {`
+32. `const fetchCart = async () => {`
     - Defines async function to fetch cart.
 
-28. `try {`
+33. `try {`
     - Starts error handling.
 
-29. `const response = await axios.get('http://localhost:3000/cart');`
+34. `const response = await axios.get('http://localhost:3000/cart');`
     - Sends `GET` request to `/cart`.
 
-30. `setCart(response.data);`
+35. `setCart(response.data);`
     - Updates `cart` state.
 
-31. `} catch (error) {`
+36. `} catch (error) {`
     - Catches errors.
 
-32. `console.error('Error fetching cart:', error);`
+37. `console.error('Error fetching cart:', error);`
     - Logs errors.
 
-33. `}`
+38. `}`
     - Ends try-catch.
 
-34. `};`
+39. `};`
     - Closes `fetchCart`.
 
-35. `const fetchOrders = async () => {`
+40. `const fetchOrders = async () => {`
     - Defines async function to fetch orders.
 
-36. `try {`
+41. `try {`
     - Starts error handling.
 
-37. `const response = await axios.get('http://localhost:3000/orders');`
+42. `const response = await axios.get('http://localhost:3000/orders');`
     - Sends `GET` request to `/orders`.
 
-38. `setOrders(response.data);`
+43. `setOrders(response.data);`
     - Updates `orders` state.
 
-39. `} catch (error) {`
+44. `} catch (error) {`
     - Catches errors.
 
-40. `console.error('Error fetching orders:', error);`
+45. `console.error('Error fetching orders:', error);`
     - Logs errors.
 
-41. `}`
+46. `}`
     - Ends try-catch.
 
-42. `};`
+47. `};`
     - Closes `fetchOrders`.
 
-43. `const addProduct = async (product) => {`
+48. `const addProduct = async (product) => {`
     - Defines async function to add product.
 
-44. `try {`
+49. `try {`
     - Starts error handling.
 
-45. `const response = await axios.post('http://localhost:3000/products', product);`
+50. `const response = await axios.post('http://localhost:3000/products', product);`
     - Sends `POST` to `/products` with product data.
 
-46. `setProducts([...products, response.data]);`
+51. `setProducts([...products, response.data]);`
     - Adds new product to state.
 
-47. `} catch (error) {`
+52. `} catch (error) {`
     - Catches errors.
 
-48. `console.error('Error adding product:', error);`
+53. `console.error('Error adding product:', error);`
     - Logs errors.
 
-49. `}`
+54. `}`
     - Ends try-catch.
 
-50. `};`
+55. `};`
     - Closes `addProduct`.
 
-51. `const addToCart = async (productId) => {`
+56. `const addToCart = async (productId) => {`
     - Defines async function to add to cart.
 
-52. `try {`
+57. `try {`
     - Starts error handling.
 
-53. `await axios.post('http://localhost:3000/cart', { productId, quantity: 1 });`
+58. `await axios.post('http://localhost:3000/cart', { productId, quantity: 1 });`
     - Sends `POST` to `/cart`.
 
-54. `fetchCart();`
+59. `fetchCart();`
     - Refetches cart to update state.
 
-55. `} catch (error) {`
+60. `} catch (error) {`
     - Catches errors.
 
-56. `console.error('Error adding to cart:', error);`
+61. `console.error('Error adding to cart:', error);`
     - Logs errors.
 
-57. `}`
+62. `}`
     - Ends try-catch.
 
-58. `};`
+63. `};`
     - Closes `addToCart`.
 
-59. `const clearCart = async () => {`
+64. `const clearCart = async () => {`
     - Defines async function to clear cart.
 
-60. `try {`
+65. `try {`
     - Starts error handling.
 
-61. `await axios.delete('http://localhost:3000/cart');`
+66. `await axios.delete('http://localhost:3000/cart');`
     - Sends `DELETE` to `/cart`.
 
-62. `fetchCart();`
+67. `fetchCart();`
     - Refetches cart.
 
-63. `} catch (error) {`
+68. `} catch (error) {`
     - Catches errors.
 
-64. `console.error('Error clearing cart:', error);`
+69. `console.error('Error clearing cart:', error);`
     - Logs errors.
 
-65. `}`
+70. `}`
     - Ends try-catch.
 
-66. `};`
+71. `};`
     - Closes `clearCart`.
 
-67. `const placeOrder = async () => {`
+72. `const placeOrder = async () => {`
     - Defines async function to place order.
 
-68. `try {`
+73. `try {`
     - Starts error handling.
 
-69. `await axios.post('http://localhost:3000/orders');`
+74. `await axios.post('http://localhost:3000/orders');`
     - Sends `POST` to `/orders`.
 
-70. `fetchCart();`
+75. `fetchCart();`
     - Refetches cart (cleared by server).
 
-71. `fetchOrders();`
+76. `fetchOrders();`
     - Refetches orders.
 
-72. `} catch (error) {`
+77. `} catch (error) {`
     - Catches errors.
 
-73. `console.error('Error placing order:', error);`
+78. `console.error('Error placing order:', error);`
     - Logs errors.
 
-74. `}`
+79. `}`
     - Ends try-catch.
 
-75. `};`
+80. `};`
     - Closes `placeOrder`.
 
-76. `const handleSearch = (e) => {`
+81. `const handleSearch = (e) => {`
     - Defines function for search input.
 
-77. `setSearchTerm(e.target.value);`
+82. `setSearchTerm(e.target.value);`
     - Updates `searchTerm`.
 
-78. `fetchProducts();`
+83. `fetchProducts();`
     - Refetches products with new term.
 
-79. `};`
+84. `};`
     - Closes `handleSearch`.
 
-80. `return (`
+85. `return (`
     - Starts JSX return.
 
-81. `<div className="min-h-screen bg-gray-50">`
+86. `<div className="min-h-screen bg-gray-50">`
     - Outer div with full height and light gray background.
 
-82. `<header className="bg-teal-600 text-white p-4 shadow-md">`
+87. `<header className="bg-teal-600 text-white p-4 shadow-md">`
     - Header with teal background and shadow.
 
-83. `<div className="container mx-auto flex justify-between items-center">`
+88. `<div className="container mx-auto flex justify-between items-center">`
     - Container for header content.
 
-84. `<h1 className="text-2xl font-bold">E-Commerce</h1>`
+89. `<h1 className="text-2xl font-bold">E-Commerce</h1>`
     - App title.
 
-85. `<div className="w-64">`
+90. `<div className="w-64">`
     - Div for search input.
 
-86. `<input`
+91. `<input`
     - Starts search input.
 
-87. `type="text"`
+92. `type="text"`
     - Sets input type.
 
-88. `placeholder="Search products..."`
+93. `placeholder="Search products..."`
     - Placeholder text.
 
-89. `value={searchTerm}`
+94. `value={searchTerm}`
     - Binds to `searchTerm`.
 
-90. `onChange={handleSearch}`
+95. `onChange={handleSearch}`
     - Calls `handleSearch` on change.
 
-91. `className="w-full p-2 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-teal-300"`
+96. `className="w-full p-2 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-teal-300"`
     - Styles input.
 
-92. `/>`
+97. `/>`
     - Closes input.
 
-93. `</div>`
+98. `</div>`
     - Closes search div.
 
-94. `</div>`
+99. `</div>`
     - Closes header container.
 
-95. `</header>`
-    - Closes header.
+100. `</header>`
+     - Closes header.
 
-96. `<section className="bg-gradient-to-r from-teal-700 to-teal-900 text-white py-20 relative overflow-hidden">`
-    - Hero section with gradient background.
+101. `<section className="bg-gradient-to-r from-teal-700 to-teal-900 text-white py-20 relative overflow-hidden">`
+     - Hero section with gradient background.
 
-97. `<div className="absolute inset-0 bg-pattern opacity-10"></div>`
-    - Background pattern (assumes CSS exists).
+102. `<div className="absolute inset-0 bg-pattern opacity-10"></div>`
+     - Background pattern (assumes CSS exists).
 
-98. `<div className="container mx-auto flex items-center justify-between px-4 relative z-10">`
-    - Hero content container.
+103. `<div className="container mx-auto flex items-center justify-between px-4 relative z-10">`
+     - Hero content container.
 
-99. `<div className="max-w-lg">`
-    - Left side of hero (text).
+104. `<div className="max-w-lg">`
+     - Left side of hero (text).
 
-100. `<span className="bg-teal-500 text-sm px-4 py-1 rounded-full mb-4 inline-block">Special Offers</span>`
+105. `<span className="bg-teal-500 text-sm px-4 py-1 rounded-full mb-4 inline-block">Special Offers</span>`
      - Tag for special offers.
 
-101. `<h2 className="text-5xl font-bold mb-6 leading-tight">Discover Amazing Products at <span className="text-teal-300">Unbeatable Prices</span></h2>`
+106. `<h2 className="text-5xl font-bold mb-6 leading-tight">Discover Amazing Products at <span className="text-teal-300">Unbeatable Prices</span></h2>`
      - Hero heading with highlighted text.
 
-102. `<p className="text-xl mb-8 opacity-90 leading-relaxed">Shop the latest trends and get exclusive deals today. Join thousands of satisfied customers and transform your shopping experience.</p>`
+107. `<p className="text-xl mb-8 opacity-90 leading-relaxed">Shop the latest trends and get exclusive deals today. Join thousands of satisfied customers and transform your shopping experience.</p>`
      - Hero subtext.
 
-103. `<div className="space-x-4 flex items-center">`
+108. `<div className="space-x-4 flex items-center">`
      - Container for buttons.
 
-104. `<button className="bg-white text-teal-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 flex items-center">`
+109. `<button className="bg-white text-teal-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 flex items-center">`
      - "Shop Now" button.
 
-105. `Shop Now`
+110. `Shop Now`
      - Button text.
 
-106. `<svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">`
+111. `<svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">`
      - Arrow icon.
 
-107. `<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />`
+112. `<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />`
      - Arrow path.
 
-108. `</svg>`
+113. `</svg>`
      - Closes icon.
 
-109. `</button>`
+114. `</button>`
      - Closes "Shop Now".
 
-110. `<button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-teal-600 transition duration-300">`
+115. `<button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-teal-600 transition duration-300">`
      - "View Deals" button.
 
-111. `View Deals`
+116. `View Deals`
      - Button text.
 
-112. `</button>`
+117. `</button>`
      - Closes "View Deals".
 
-113. `</div>`
+118. `</div>`
      - Closes button container.
 
-114. `</div>`
+119. `</div>`
      - Closes left side.
 
-115. `<div className="hidden lg:block w-1/3 transform hover:scale-105 transition duration-500">`
+120. `<div className="hidden lg:block w-1/3 transform hover:scale-105 transition duration-500">`
      - Right side (image), hidden on small screens.
 
-116. `<div className="bg-teal-600/50 rounded-lg p-4 backdrop-blur-sm">`
+121. `<div className="bg-teal-600/50 rounded-lg p-4 backdrop-blur-sm">`
      - Image container with blur effect.
 
-117. `<img`
+122. `<img`
      - Starts hero image.
 
-118. `src="https://img.freepik.com/free-photo/showing-cart-trolley-shopping-online-sign-graphic_53876-133967.jpg"`
+123. `src="https://img.freepik.com/free-photo/showing-cart-trolley-shopping-online-sign-graphic_53876-133967.jpg"`
      - Image URL.
 
-119. `alt="Featured Products"`
+124. `alt="Featured Products"`
      - Alt text.
 
-120. `className="rounded-lg shadow-lg hover:shadow-2xl transition duration-300"`
+125. `className="rounded-lg shadow-lg hover:shadow-2xl transition duration-300"`
      - Styles image.
 
-121. `/>`
+126. `/>`
      - Closes image.
 
-122. `</div>`
+127. `</div>`
      - Closes image container.
 
-123. `</div>`
+128. `</div>`
      - Closes right side.
 
-124. `</div>`
+129. `</div>`
      - Closes hero container.
 
-125. `</section>`
+130. `</section>`
      - Closes hero section.
 
-126. `<main className="container mx-auto py-8 px-4">`
+131. `<main className="container mx-auto py-8 px-4">`
      - Main content area.
 
-127. `<div className="grid grid-cols-1 lg:grid-cols-4 gap-8">`
+132. `<div className="grid grid-cols-1 lg:grid-cols-4 gap-8">`
      - Grid layout: 1 column small, 4 large.
 
-128. `<div className="lg:col-span-3">`
+133. `<div className="lg:col-span-3">`
      - Left section (3 columns on large screens).
 
-129. `<ProductList products={products} addToCart={addToCart} />`
-     - Renders `ProductList`.
+134. `<ProductList products={products} addToCart={addToCart} loading={loading} />`
+     - Renders `ProductList` with `loading` prop for shimmer.
 
-130. `<div className="mt-8 bg-white p-6 rounded-lg shadow-md">`
+135. `<div className="mt-8 bg-white p-6 rounded-lg shadow-md">`
      - Form container.
 
-131. `<h2 className="text-xl font-semibold mb-4 text-teal-700">Add New Product</h2>`
+136. `<h2 className="text-xl font-semibold mb-4 text-teal-700">Add New Product</h2>`
      - Form heading.
 
-132. `<form`
+137. `<form`
      - Starts form.
 
-133. `onSubmit={(e) => {`
+138. `onSubmit={(e) => {`
      - Defines submit handler.
 
-134. `e.preventDefault();`
+139. `e.preventDefault();`
      - Prevents page reload.
 
-135. `const form = e.target;`
+140. `const form = e.target;`
      - Gets form element.
 
-136. `addProduct({`
+141. `addProduct({`
      - Calls `addProduct`.
 
-137. `name: form.name.value,`
+142. `name: form.name.value,`
      - Gets name input.
 
-138. `category: form.category.value,`
+143. `category: form.category.value,`
      - Gets category input.
 
-139. `price: parseFloat(form.price.value),`
+144. `price: parseFloat(form.price.value),`
      - Gets price as float.
 
-140. `image: form.image.value,`
+145. `image: form.image.value,`
      - Gets image URL.
 
-141. `});`
+146. `});`
      - Closes `addProduct` call.
 
-142. `form.reset();`
+147. `form.reset();`
      - Resets form.
 
-143. `}}`
+148. `}}`
      - Closes submit handler.
 
-144. `className="space-y-4"`
+149. `className="space-y-4"`
      - Adds spacing between form elements.
 
-145. `>`
+150. `>`
      - Opens form content.
 
-146. `<input`
+151. `<input`
      - Starts name input.
 
-147. `name="name"`
+152. `name="name"`
      - Sets name attribute.
 
-148. `placeholder="Product Name"`
+153. `placeholder="Product Name"`
      - Placeholder text.
-
-149. `className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"`
-     - Styles input.
-
-150. `/>`
-     - Closes name input.
-
-151. `<input`
-     - Starts category input.
-
-152. `name="category"`
-     - Sets name.
-
-153. `placeholder="Category"`
-     - Placeholder.
 
 154. `className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"`
      - Styles input.
 
 155. `/>`
-     - Closes category input.
+     - Closes name input.
 
 156. `<input`
-     - Starts price input.
+     - Starts category input.
 
-157. `name="price"`
+157. `name="category"`
      - Sets name.
 
-158. `type="number"`
-     - Sets type to number.
-
-159. `step="0.01"`
-     - Allows decimals.
-
-160. `placeholder="Price"`
+158. `placeholder="Category"`
      - Placeholder.
 
-161. `className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"`
+159. `className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"`
      - Styles input.
 
-162. `/>`
-     - Closes price input.
+160. `/>`
+     - Closes category input.
 
-163. `<input`
-     - Starts image input.
+161. `<input`
+     - Starts price input.
 
-164. `name="image"`
+162. `name="price"`
      - Sets name.
 
-165. `placeholder="Image URL"`
+163. `type="number"`
+     - Sets type to number.
+
+164. `step="0.01"`
+     - Allows decimals.
+
+165. `placeholder="Price"`
      - Placeholder.
 
 166. `className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"`
      - Styles input.
 
 167. `/>`
+     - Closes price input.
+
+168. `<input`
+     - Starts image input.
+
+169. `name="image"`
+     - Sets name.
+
+170. `placeholder="Image URL"`
+     - Placeholder.
+
+171. `className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"`
+     - Styles input.
+
+172. `/>`
      - Closes image input.
 
-168. `<button`
+173. `<button`
      - Starts submit button.
 
-169. `type="submit"`
+174. `type="submit"`
      - Sets button type.
 
-170. `className="w-full bg-teal-600 text-white p-3 rounded-lg hover:bg-teal-700 transition duration-300"`
+175. `className="w-full bg-teal-600 text-white p-3 rounded-lg hover:bg-teal-700 transition duration-300"`
      - Styles button.
 
-171. `>`
+176. `>`
      - Opens button content.
 
-172. `Add Product`
+177. `Add Product`
      - Button text.
 
-173. `</button>`
+178. `</button>`
      - Closes button.
 
-174. `</form>`
+179. `</form>`
      - Closes form.
 
-175. `</div>`
+180. `</div>`
      - Closes form container.
 
-176. `</div>`
+181. `</div>`
      - Closes left section.
 
-177. `<aside className="lg:col-span-1 sticky top-4 h-fit">`
+182. `<aside className="lg:col-span-1 sticky top-4 h-fit">`
      - Sidebar (1 column, sticky).
 
-178. `<Cart cart={cart} products={products} clearCart={clearCart} placeOrder={placeOrder} />`
+183. `<Cart cart={cart} products={products} clearCart={clearCart} placeOrder={placeOrder} />`
      - Renders `Cart`.
 
-179. `<Orders orders={orders} products={products} />`
+184. `<Orders orders={orders} products={products} />`
      - Renders `Orders`.
 
-180. `</aside>`
+185. `</aside>`
      - Closes sidebar.
 
-181. `</div>`
+186. `</div>`
      - Closes grid.
 
-182. `</main>`
+187. `</main>`
      - Closes main.
 
-183. `<Toaster />`
+188. `<Toaster />`
      - Renders toast container.
 
-184. `</div>`
+189. `</div>`
      - Closes outer div.
 
-185. `);`
+190. `);`
      - Closes return.
 
-186. `}`
+191. `}`
      - Closes `App`.
 
-187. `export default App;`
+192. `export default App;`
      - Exports `App`.
 
 ---
@@ -1581,11 +1617,11 @@ Below is a detailed, line-by-line explanation of all the files in your e-commerc
 ---
 
 ### Notes Summary
-- **`server.js`**: Backend with in-memory storage and HTTP endpoints.
-- **`Cart.jsx`**: Shows cart items, totals, and buttons with loading states.
-- **`Orders.jsx`**: Displays order history with product details.
-- **`ProductList.jsx`**: Lists products with images and interactive buttons.
-- **`App.jsx`**: Manages state, fetches data from `server.js`, and lays out the UI with a hero.
-- **`index.jsx`**: Renders the app.
+- **`server.js`**: Backend with in-memory storage and HTTP endpoints (unchanged).
+- **`Cart.jsx`**: Shows cart items, totals, and buttons with loading states (unchanged).
+- **`Orders.jsx`**: Displays order history with product details (unchanged).
+- **`ProductList.jsx`**: Lists products with images, interactive buttons, and shimmer effects for loading (updated with `ShimmerThumbnail` import and usage).
+- **`App.jsx`**: Manages state, fetches data from `server.js`, renders UI with a hero, and controls shimmer via `loading` state with a 2-second delay (updated with `loading` state and delay).
+- **`index.jsx`**: Renders the app (unchanged).
 
-Copy this into your notes app, and let me know if you need anything else!
+These notes now reflect the integration of `react-shimmer-effects` as seen in the latest code. Copy them into your notes app, and let me know if you need further tweaks!

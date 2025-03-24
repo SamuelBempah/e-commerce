@@ -3,7 +3,7 @@ import React from 'react';
 const Orders = ({ orders, products }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4 text-teal-700">Your Orders</h2>
+      <h2 className="text-xl font-semibold mb-4 text-rose-700">Your Orders</h2>
       {orders.length === 0 ? (
         <p className="text-gray-500">No orders yet</p>
       ) : (
@@ -25,7 +25,7 @@ const Orders = ({ orders, products }) => {
                 </div>
               );
             })}
-            <p className="font-bold text-teal-600 mt-2">Total: GHS {order.total.toFixed(2)}</p>
+            <p className="font-bold text-rose-700 mt-2">Total: GHS {order.total.toFixed(2)}</p>
           </div>
         ))
       )}

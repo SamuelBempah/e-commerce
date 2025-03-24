@@ -2,7 +2,92 @@ import http from "node:http";
 import url from "node:url";
 import cors from "cors";
 
-const products = [];
+const products = [
+  {
+    "name": "ASHION Men's Varsity Jacket - Stylish, Comfortable, Durable with Free Necklace",
+    "category": "Clothing",
+    "price": 119,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/65/8041191/1.jpg?5821",
+    "id": 1
+  },
+  {
+    "name": "Long Lace-Up Canvas Casual Shoes - Black/White", 
+    "category": "Footwear",
+    "price": 118,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/57/8002911/1.jpg?6198",
+    "id": 2
+  },
+  {
+    "name": "Skeleton Dial Leather Quartz Wrist Watch - Brown/Gold",
+    "category": "Accessory",
+    "price": 37,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/23/966346/1.jpg?3849",
+    "id": 3
+  },
+  {
+    "name": "Itel IT2165 - 1.8\" - Dual SIM - 32MB - 1000 mAh - Black +12 Month Warranty",
+    "category": "Electronics",
+    "price": 99,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/93/0927972/1.jpg?1354",
+    "id": 4
+  },
+  {
+    "name": "Fragrance World Bad Lad Eau De Parfum Spray - 50ml - Black",
+    "category": "Beauty",
+    "price": 55,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/15/802674/1.jpg?7656",
+    "id": 5
+  },
+  {
+    "name": "Nexon 32\" - Digital Satellite TV - USB - HDMI - Black.",
+    "category": "Electronics",
+    "price": 1250,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/77/3401682/1.jpg?5666",
+    "id": 6
+  },
+  {
+    "name": "3 In 1 Multi Functional Backpack With USB Slot - Black",
+    "category": "Accessory",
+    "price": 79.99,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/25/070892/1.jpg?1217",
+    "id": 7
+  },
+  {
+    "name": "Starlink Mini Kit - High Speed Internet Network - White",
+    "category": "Electronics",
+    "price": 3700,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/88/7353482/1.jpg?0662",
+    "id": 8
+  },
+  {
+    "name": "AILYONS HD-198A-J Electric Dry Iron Box - 1000W - White & Blue",
+    "category": "Appliances",
+    "price": 85,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/66/1112781/1.jpg?6697",
+    "id": 9
+  },
+  {
+    "name": "Catpapa 0-3Years Kid Boy Clothing Cactus Print Short Sleeves T-shirt with Shorts 2PCS",
+    "category": "Clothing",
+    "price": 106,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/55/1985772/1.jpg?5095",
+    "id": 10
+  },
+  {
+    "name": "ASHION ASHION Martin Boots: Sleek, Durable, Stylish â Black",
+    "category": "Footwear",
+    "price": 163,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/98/6818581/1.jpg?6270",
+    "id": 11
+  },
+  {
+    "name": "Evivi Perfumed Premium Rice - 5Kg",
+    "category": "Grocery",
+    "price": 129.98,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/88/9815872/1.jpg?2624",
+    "id": 12
+  }
+];
 const cart = [];
 const orders = [];
 

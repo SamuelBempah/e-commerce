@@ -14,7 +14,12 @@ const Cart = ({ cart, products, clearCart, placeOrder }) => {
     toast.success('Cart cleared', {
       duration: 3000,
       position: 'top-center',
-      style: { background: '#0d9488', color: '#ffffff' },
+      style: { 
+        border: '1px solid #fff400',
+        padding: '16px',
+        background: '#c70039', 
+        color: '#ffffff' 
+    },
     });
   };
 
@@ -23,7 +28,11 @@ const Cart = ({ cart, products, clearCart, placeOrder }) => {
     toast.success('Order placed successfully', {
       duration: 3000,
       position: 'top-center',
-      style: { background: '#0d9488', color: '#ffffff' },
+      style: {border: '1px solid #fff400',
+        padding: '16px',
+        background: '#c70039',
+          color: '#ffffff' 
+        },
     });
   };
 
@@ -45,7 +54,7 @@ const Cart = ({ cart, products, clearCart, placeOrder }) => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-      <h2 className="text-xl font-semibold mb-4 text-teal-700">Your Cart</h2>
+      <h2 className="text-xl font-semibold mb-4 text-rose-700">Your Cart</h2>
       {cart.length === 0 ? (
         <p className="text-gray-500">Your cart is empty</p>
       ) : (

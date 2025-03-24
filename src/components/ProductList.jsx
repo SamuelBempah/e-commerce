@@ -9,7 +9,9 @@ const ProductList = ({ products, addToCart, loading }) => {
       duration: 3000,
       position: 'top-center',
       style: {
-        background: '#0d9488',
+        border: '1px solid #fff400',
+        padding: '16px',
+        background: '#c70039',
         color: '#ffffff',
       },
     });
@@ -26,7 +28,7 @@ const ProductList = ({ products, addToCart, loading }) => {
 
   return (
     <div className="container mx-auto px-4 max-w-6xl">
-      <h2 className="text-3xl font-bold mb-8 text-teal-700 text-center">
+      <h2 className="text-3xl font-bold mb-8 text-rose-700 text-center">
         Our Featured Products
       </h2>
       {loading ? (
@@ -53,17 +55,17 @@ const ProductList = ({ products, addToCart, loading }) => {
               </div>
               <h3 className="text-lg font-bold text-gray-800 mb-2">{product.name}</h3>
               <div className="flex items-center mb-2">
-                <span className="px-3 py-1 bg-teal-100 text-teal-800 rounded-full text-sm">
+                <span className="px-3 py-1 bg-teal-100 text-rose-700 rounded-full text-sm">
                   {product.category}
                 </span>
               </div>
-              <p className="text-xl font-bold text-teal-600 mb-3">
+              <p className="text-xl font-bold text-rose-700 mb-3">
                 GHS {product.price.toFixed(2)}
               </p>
               <button
                 onClick={() => handleButtonClick(product.id, product.name)}
                 disabled={loadingStates[product.id]}
-                className="w-full bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 transform hover:scale-[1.02] transition-all duration-300 font-semibold"
+                className="w-full bg-rose-700 text-white py-2 rounded-lg hover:bg-rose-700 transform hover:scale-[1.02] transition-all duration-300 font-semibold"
               >
                 {loadingStates[product.id] ? (
                   <svg className="animate-spin h-5 w-5 mr-2 inline" viewBox="0 0 24 24">

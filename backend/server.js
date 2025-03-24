@@ -1,6 +1,6 @@
 import http from "node:http";
 import url from "node:url";
-import cors from "cors"; // Add this
+import cors from "cors";
 
 const products = [];
 const cart = [];

@@ -1,0 +1,48 @@
+### **1. Fetch All Products (GET)**
+```powershell
+Invoke-WebRequest -Uri "http://localhost:3000/products" -Method GET | Select-Object -ExpandProperty Content
+```
+
+### **2. Filter Products by Name (GET)**
+```powershell
+Invoke-WebRequest -Uri "http://localhost:3000/products?name={name}" -Method GET | Select-Object -ExpandProperty Content
+```
+
+### **3. Filter Products by Category (GET)**
+```powershell
+Invoke-WebRequest -Uri "http://localhost:3000/products?category={category}" -Method GET | Select-Object -ExpandProperty Content
+```
+
+### **4. Add New Product (POST)**
+```powershell
+$product = @{ name="{product_name}"; category="{category}"; price={price}; image="{image_url}" } | ConvertTo-Json
+Invoke-WebRequest -Uri "http://localhost:3000/products" -Method POST -Body $product -ContentType "application/json" | Select-Object -ExpandProperty Content
+```
+
+### **5. View Cart (GET)**
+```powershell
+Invoke-WebRequest -Uri "http://localhost:3000/cart" -Method GET | Select-Object -ExpandProperty Content
+```
+
+### **6. Add Item to Cart (POST)**
+```powershell
+$cartItem = @{ productId={product_id}; quantity={quantity} } | ConvertTo-Json
+Invoke-WebRequest -Uri "http://localhost:3000/cart" -Method POST -Body $cartItem -ContentType "application/json" | Select-Object -ExpandProperty Content
+```
+
+### **7. Clear Cart (DELETE)**
+```powershell
+Invoke-WebRequest -Uri "http://localhost:3000/cart" -Method DELETE | Select-Object -ExpandProperty Content
+```
+
+### **8. Create Order (POST)**
+```powershell
+Invoke-WebRequest -Uri "http://localhost:3000/orders" -Method POST | Select-Object -ExpandProperty Content
+```
+
+### **9. View All Orders (GET)**
+```powershell
+Invoke-WebRequest -Uri "http://localhost:3000/orders" -Method GET | Select-Object -ExpandProperty Content
+```
+
+---

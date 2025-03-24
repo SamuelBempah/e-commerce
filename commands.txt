@@ -46,3 +46,94 @@ Invoke-WebRequest -Uri "http://localhost:3000/orders" -Method GET | Select-Objec
 ```
 
 ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Here's a simple explanation of each part of the commands, broken down piece by piece:
+
+---
+
+### **1. `Invoke-WebRequest`**  
+This is PowerShell's way of sending web requests (like a browser does). It can fetch data (GET), send data (POST), or delete data (DELETE).
+
+---
+
+### **2. `-Uri "http://localhost:3000/products"`**  
+- `-Uri` = The web address (URL) you're targeting.  
+- `http://localhost:3000` = Your server running on your own computer (`localhost`) on port `3000`.  
+- `/products` = The specific part of the API that handles products.  
+
+---
+
+### **3. `-Method GET/POST/DELETE`**  
+- `GET` = Retrieve data (like loading a webpage).  
+- `POST` = Send new data (like submitting a form).  
+- `DELETE` = Remove data (like clearing a cart).  
+
+---
+
+### **4. `| Select-Object -ExpandProperty Content`**  
+- `|` = Passes the result to the next command.  
+- `Select-Object -ExpandProperty Content` = Extracts just the response data (like the list of products) from the web request.  
+
+---
+
+### **5. `$product = @{...} | ConvertTo-Json`**  
+- `$product` = Stores data in a variable.  
+- `@{...}` = Defines a PowerShell "dictionary" (key-value pairs) with product details.  
+- `ConvertTo-Json` = Converts the data into JSON format (the standard way APIs send/receive data).  
+
+---
+
+### **6. `-Body $product`**  
+- Attaches the JSON data (`$product`) to the request (used for `POST`).  
+
+---
+
+### **7. `-ContentType "application/json"`**  
+- Tells the server: "I'm sending JSON data!" (required for `POST`).  
+
+---
+
+### **Summary of Each Command’s Purpose:**  
+
+| **Command**                                                                 | **What It Does**                                                                 |
+|-----------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| `GET /products`                                                             | Fetches all products.                                                            |
+| `GET /products?name={name}`                                                 | Filters products by name (replace `{name}`).                                     |
+| `GET /products?category={category}`                                         | Filters products by category (replace `{category}`).                             |
+| `POST /products` with `name`, `category`, `price`, `image`                  | Adds a new product (fill in the `{...}` placeholders).                           |
+| `GET /cart`                                                                 | Shows items in your cart.                                                        |
+| `POST /cart` with `productId` and `quantity`                                | Adds an item to the cart (replace `{product_id}` and `{quantity}`).              |
+| `DELETE /cart`                                                              | Empties the cart.                                                                |
+| `POST /orders`                                                              | Converts cart items into an order (checkout).                                    |
+| `GET /orders`                                                               | Lists all past orders.                                                           |
+
+---
+
+### **Example Walkthrough:**  
+If you run:  
+```powershell
+Invoke-WebRequest -Uri "http://localhost:3000/products" -Method GET | Select-Object -ExpandProperty Content
+```  
+It:  
+1. Sends a `GET` request to your server at `http://localhost:3000/products`.  
+2. Returns a list of products (like `[{"name":"iPhone", "price":999}]`).  
+
+---

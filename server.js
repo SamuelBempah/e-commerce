@@ -86,7 +86,50 @@ const products = [
     "price": 129.98,
     "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/88/9815872/1.jpg?2624",
     "id": 12
-  }
+  },
+  {
+    "name": "Westpool WP-708A Twin Tub Top Load Washing Machine - 7Kg - White",
+    "category": "Electronics",
+    "price": 1920,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/30/7056121/2.jpg?6817",
+    "id": 13
+  },
+  {
+    "name": "Silver Crest Powerful Professional Heavy Duty Commercial Electric Blender",
+    "category": "Home Applainces",
+    "price": 245,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/16/9424211/1.jpg?6831",
+    "id": 14
+  },
+  {
+    "name": "2.4G Rechargeable Ultra-thin Wireless Mouse - Black",
+    "category": "Electronics",
+    "price": 42,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/62/011683/1.jpg?9374",
+    "id": 15
+  },
+  {
+    "name": "Samsung S24 Ultra Galaxy AI 256GB ROM + 12GB RAM - 50MP Rear/12MP Front - 5000MAH - Titanium Black +24 Months Warranty",
+    "category": "Phones",
+    "price": 19031,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/37/3239112/1.jpg?7064",
+    "id": 16
+  },
+  {
+    "name": "Apple iPhone 11 - 6.1 - 128GB HDD - 4GB RAM - 12MP Rear/12MP Front - 3110 mAh - Sea Blue",
+    "category": "IPhones",
+    "price": 5549,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/85/521924/1.jpg?8989",
+    "id": 17
+  },
+  {
+    "name": "K9 Double Wireless Phone Microphone / Lavalier for Android Type C and Iphone - Black",
+    "category": "Musical Instruments",
+    "price": 209,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/36/5984931/1.jpg?7405",
+    "id": 18
+  },
+  
 ];
 const cart = [];
 const orders = [];

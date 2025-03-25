@@ -137,3 +137,140 @@ It:
 2. Returns a list of products (like `[{"name":"iPhone", "price":999}]`).  
 
 ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Simple Answer
+Yes, I can give you cURL commands alongside `Invoke-WebRequest` for your e-commerce site’s endpoints. Here’s an example for `GET /products`:
+- **cURL**: `curl http://localhost:3000/products`
+- **Invoke-WebRequest**: `Invoke-WebRequest -Uri "http://localhost:3000/products" -Method GET`
+
+I’ll provide both for all endpoints below.
+
+---
+
+### Detailed Answer
+I’ll list cURL and `Invoke-WebRequest` commands for each endpoint in your `server.js` (`GET /products`, `POST /products`, `GET /cart`, `POST /cart`, `DELETE /cart`, `POST /orders`, `GET /orders`). These reference your latest `server.js` (lines noted from the version before MongoDB was considered). Run cURL in a terminal (e.g., Command Prompt, Terminal, or Git Bash) and `Invoke-WebRequest` in PowerShell, with `server.js` running (`node server.js`).
+
+#### 1. Fetch Products (`GET /products`)
+- **Purpose**: Get all products (lines 14-29).
+- **cURL**:
+  ```bash
+  curl http://localhost:3000/products
+  ```
+- **Invoke-WebRequest**:
+  ```powershell
+  Invoke-WebRequest -Uri "http://localhost:3000/products" -Method GET
+  ```
+- **With Query (e.g., search "shirt")**:
+  - **cURL**: `curl "http://localhost:3000/products?name=shirt"`
+  - **Invoke-WebRequest**: `Invoke-WebRequest -Uri "http://localhost:3000/products?name=shirt" -Method GET`
+- **Output**: JSON array of products (e.g., `[{"id":1,"name":"Shirt",...}]`).
+
+#### 2. Add a Product (`POST /products`)
+- **Purpose**: Add a new product (lines 30-41).
+- **cURL**:
+  ```bash
+  curl -X POST http://localhost:3000/products -H "Content-Type: application/json" -d "{\"name\":\"Shirt\",\"category\":\"Clothing\",\"price\":19.99,\"image\":\"https://example.com/shirt.jpg\"}"
+  ```
+- **Invoke-WebRequest**:
+  ```powershell
+  $headers = @{"Content-Type" = "application/json"}
+  $body = @{"name"="Shirt";"category"="Clothing";"price"=19.99;"image"="https://example.com/shirt.jpg"} | ConvertTo-Json
+  Invoke-WebRequest -Uri "http://localhost:3000/products" -Method POST -Headers $headers -Body $body
+  ```
+- **Output**: New product with `id` (e.g., `{"id":1,"name":"Shirt",...}`).
+
+#### 3. Fetch Cart (`GET /cart`)
+- **Purpose**: Get cart contents (lines 64-66).
+- **cURL**:
+  ```bash
+  curl http://localhost:3000/cart
+  ```
+- **Invoke-WebRequest**:
+  ```powershell
+  Invoke-WebRequest -Uri "http://localhost:3000/cart" -Method GET
+  ```
+- **Output**: JSON array of cart items (e.g., `[{"productId":1,"quantity":1}]`).
+
+#### 4. Add to Cart (`POST /cart`)
+- **Purpose**: Add/update cart item (lines 42-63).
+- **cURL**:
+  ```bash
+  curl -X POST http://localhost:3000/cart -H "Content-Type: application/json" -d "{\"productId\":1,\"quantity\":1}"
+  ```
+- **Invoke-WebRequest**:
+  ```powershell
+  $headers = @{"Content-Type" = "application/json"}
+  $body = @{"productId"=1;"quantity"=1} | ConvertTo-Json
+  Invoke-WebRequest -Uri "http://localhost:3000/cart" -Method POST -Headers $headers -Body $body
+  ```
+- **Output**: Updated cart array.
+
+#### 5. Clear Cart (`DELETE /cart`)
+- **Purpose**: Empty the cart (lines 67-70).
+- **cURL**:
+  ```bash
+  curl -X DELETE http://localhost:3000/cart
+  ```
+- **Invoke-WebRequest**:
+  ```powershell
+  Invoke-WebRequest -Uri "http://localhost:3000/cart" -Method DELETE
+  ```
+- **Output**: `{"message":"cart cleared"}`.
+
+#### 6. Place an Order (`POST /orders`)
+- **Purpose**: Create order from cart (lines 71-93).
+- **cURL**:
+  ```bash
+  curl -X POST http://localhost:3000/orders
+  ```
+- **Invoke-WebRequest**:
+  ```powershell
+  Invoke-WebRequest -Uri "http://localhost:3000/orders" -Method POST
+  ```
+- **Output**: New order (e.g., `{"orderId":1,"items":[...],"total":19.99}`).
+
+#### 7. Fetch Orders (`GET /orders`)
+- **Purpose**: Get all orders (lines 94-96).
+- **cURL**:
+  ```bash
+  curl http://localhost:3000/orders
+  ```
+- **Invoke-WebRequest**:
+  ```powershell
+  Invoke-WebRequest -Uri "http://localhost:3000/orders" -Method GET
+  ```
+- **Output**: JSON array of orders.
+
+---
+
+### Notes
+- **cURL Flags**:
+  - `-X`: Specifies HTTP method (e.g., `POST`, `DELETE`).
+  - `-H`: Sets headers (e.g., `Content-Type`).
+  - `-d`: Sends data (JSON body).
+- **Invoke-WebRequest**:
+  - `-Uri`: Endpoint URL.
+  - `-Method`: HTTP method.
+  - `-Headers`/`-Body`: For `POST` requests.
+- **Pretty JSON**:
+  - cURL: Pipe to `jq` (if installed) like `curl http://localhost:3000/products | jq`.
+  - PowerShell: Add `| Select-Object -ExpandProperty Content | ConvertFrom-Json` for parsed output.
+- **Server Reference**: Matches your `server.js` endpoints (e.g., `GET /products` at lines 14-29).
+
+These commands let you test your API with either cURL or PowerShell. Let me know if you need more!

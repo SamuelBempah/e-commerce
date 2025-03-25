@@ -95,50 +95,53 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-gradient-to-r from-rose-700 to-am-amber-400 text-white p-4 shadow-md">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold">E-Commerce</h1>
-          <div className="w-64">
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={searchTerm}
-              onChange={handleSearch}
-              className="w-full p-2 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-rose-300"
-            />
-          </div>
-        </div>
-      </header>
-
-      <section className="bg-gradient-to-r from-rose-700 to-amber-400 text-white py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-pattern opacity-10"></div>
-        <div className="container mx-auto flex items-center justify-between px-4 relative z-10">
-          <div className="max-w-lg">
-            <span className="bg-rose-800 text-sm px-4 py-1 rounded-full mb-4 inline-block">Special Offers</span>
-            <h2 className="text-5xl font-bold mb-6 leading-tight">Discover Amazing Products at <span className="text-teal-300">Unbeatable Prices</span></h2>
-            <p className="text-xl mb-8 opacity-90 leading-relaxed">Shop the latest trends and get exclusive deals today. Join thousands of satisfied customers and transform your shopping experience.</p>
-            <div className="space-x-4 flex items-center">
-              <button 
-                onClick={() => document.getElementById('products-section').scrollIntoView({ behavior: 'smooth' })}
-                className="bg-white text-rose-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 flex items-center"
-              >
-                Shop Now
-                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </button>
-              <button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-rose-700 transition duration-300">
-                View Deals
-              </button>
+      <section className="bg-gradient-to-r from-rose-700 to-amber-400 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/40 z-10"></div>
+        <video 
+          className="absolute inset-0 w-full h-full object-cover"
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+        >
+          <source src="/hero-video.mp4" type="video/mp4" />
+          Your Browser Does Not Support Background Video.
+        </video>
+        <div className="relative z-20">
+          <header className="transparent p-4">
+            <div className="container mx-auto flex justify-between items-center">
+              <h1 className="text-2xl font-bold">E-Commerce</h1>
+              <div className="w-64">
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchTerm}
+                  onChange={handleSearch}
+                  className="w-full p-2 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-rose-300"
+                />
+              </div>
             </div>
-          </div>
-          <div className="hidden lg:block w-1/3 transform hover:scale-105 transition duration-500">
-            <div className="bg-rose-700/50 rounded-lg p-4 backdrop-blur-sm">
-              <img 
-                src="https://img.freepik.com/free-photo/showing-cart-trolley-shopping-online-sign-graphic_53876-133967.jpg" 
-                alt="Featured Products" 
-                className="rounded-lg shadow-lg hover:shadow-2xl transition duration-300"
-              />
+          </header>
+
+          <div className="container mx-auto flex items-center justify-between px-4 py-20">
+            <div className="max-w-lg">
+              <span className="bg-rose-800 text-sm px-4 py-1 rounded-full mb-4 inline-block">Special Offers</span>
+              <h2 className="text-5xl font-bold mb-6 leading-tight">Discover Amazing Products at <span className="text-teal-300">Unbeatable Prices</span></h2>
+              <p className="text-xl mb-8 opacity-90 leading-relaxed">Shop the latest trends and get exclusive deals today. Join thousands of satisfied customers and transform your shopping experience.</p>
+              <div className="space-x-4 flex items-center">
+                <button 
+                  onClick={() => document.getElementById('products-section').scrollIntoView({ behavior: 'smooth' })}
+                  className="bg-white text-rose-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 flex items-center"
+                >
+                  Shop Now
+                  <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </button>
+                <button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-rose-700 transition duration-300">
+                  View Deals
+                </button>
+              </div>
             </div>
           </div>
         </div>

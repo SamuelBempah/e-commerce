@@ -11,8 +11,8 @@ const products = [
     "id": 1
   },
   {
-    "name": "Long Lace-Up Canvas Casual Shoes - Black/White", 
-    "category": "Footwear",
+    "name": "Long Lace-Up Canvas Casual Shoes - Black/White",
+    "category": "Footwear", 
     "price": 118,
     "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/57/8002911/1.jpg?6198",
     "id": 2
@@ -129,7 +129,91 @@ const products = [
     "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/36/5984931/1.jpg?7405",
     "id": 18
   },
-  
+  {
+    "name": "15.6\" Laptop J4125 8GB+256GB SSD Student Portable Computer",
+    "category": "Computing",
+    "price": 3200,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/39/6216352/1.jpg?1293",
+    "id": 19
+  },
+  {
+    "name": "Striped Short Sleeve Polo T-Shirt Set - 4 Pieces - Multicolour",
+    "category": "Clothing",
+    "price": 376.98,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/89/252335/1.jpg?8777",
+    "id": 20
+  },
+  {
+    "name": "Nexon Energy Saving 1.5 HP - Split Air Conditioner - White",
+    "category": "Electronics",
+    "price": 3649,
+    "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/52/1946362/1.jpg?5525",
+    "id": 21
+  }
+  ,
+    {
+      "name": "Elbee Automatic Voltage Stabilizer – TAG3",
+      "category": "Electronics",
+      "price": 1622,
+      "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/45/1648371/1.jpg?7867",
+      "id": 22
+    },
+    {
+      "name": "12 Cubes Plastic Wardrobe - Black/White", 
+      "category": "Accessory",
+      "price": 584.98,
+      "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/54/61742/1.jpg?3351",
+      "id": 23
+    },
+    {
+      "name": "3Pcs Foldable Clothing Storage Bag - Black",
+      "category": "Clothing", 
+      "price": 149,
+      "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/88/2900182/1.jpg?1806",
+      "id": 24
+    },
+    {
+      "name": "Wireless Keyboard & Mouse Combo - Black + Free BT Headphone",
+      "category": "Computing",
+      "price": 155,
+      "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/24/613781/1.jpg?5064",
+      "id": 25
+    },
+    {
+      "name": "L88 TWS Bluetooth Air Pod Headphones - White",
+      "category": "Electronics",
+      "price": 153.4,
+      "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/20/7465482/1.jpg?8985",
+      "id": 26
+    },
+    {
+      "name": "4G LTE Wifi 150Mbps Portable Mobile MiFi With SIM Card Slot - 2100mAh - White",
+      "category": "Computing", 
+      "price": 219,
+      "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/23/833095/1.jpg?8436",
+      "id": 27
+    },
+    {
+      "name": "Neck Headphones - Black",
+      "category": "Electronics",
+      "price": 84.55,
+      "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/32/7075651/1.jpg?9394",
+      "id": 28
+    },
+    {
+      "name": "Magnetic Wireless Power Bank Charger - White",
+      "category": "Accessory",
+      "price": 178.6,
+      "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/88/1878761/1.jpg?3111",
+      "id": 29
+    },
+    {
+      "name": "5 in 2 Wireless USB Type C Hub Port Expansion Computer Multiple",
+      "category": "Computing",
+      "price": 105,
+      "image": "https://gh.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/06/6532861/1.jpg?2503",
+      "id": 30
+    }
 ];
 const cart = [];
 const orders = [];

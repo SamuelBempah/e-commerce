@@ -82,7 +82,7 @@ const Cart = ({ cart, products, clearCart, placeOrder }) => {
             <button
               onClick={() => handleButtonClick('clearCart')}
               disabled={loadingStates.clearCart}
-              className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-300"
+              className="w-full bg-rose-700 text-white py-2 rounded-lg hover:bg-rose-900 transform hover:scale-[1.02] transition-all duration-300 font-semibold"
             >
               {loadingStates.clearCart ? (
                 <svg className="animate-spin h-5 w-5 mr-2 inline" viewBox="0 0 24 24">
@@ -94,7 +94,7 @@ const Cart = ({ cart, products, clearCart, placeOrder }) => {
             <button
               onClick={() => handleButtonClick('placeOrder')}
               disabled={loadingStates.placeOrder}
-              className="w-full bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 transition duration-300"
+              className="w-full bg-teal-700 text-white py-2 rounded-lg hover:bg-teal-900 transform hover:scale-[1.02] transition-all duration-300 font-semibold"
             >
               {loadingStates.placeOrder ? (
                 <svg className="animate-spin h-5 w-5 mr-2 inline" viewBox="0 0 24 24">

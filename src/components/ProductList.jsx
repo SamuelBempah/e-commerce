@@ -53,19 +53,19 @@ const ProductList = ({ products, addToCart, loading }) => {
                   className="w-full h-60 object-contain hover:scale-105 transition-transform duration-300"
                 />
               </div>
-              <h3 className="text-lg font-bold text-gray-800 mb-2">{product.name}</h3>
+              <h3 className="flex-auto text-lg font-semibold text-slate-900">{product.name}</h3>
               <div className="flex items-center mb-2">
-                <span className="px-3 py-1 bg-teal-100 text-rose-700 rounded-full text-sm">
+                <span className="w-full flex-none text-sm font-medium text-slate-700 mt-2">
                   {product.category}
                 </span>
               </div>
-              <p className="text-xl font-bold text-rose-700 mb-3">
+              <p className="text-lg font-semibold text-slate-500">
                 GHS {product.price.toFixed(2)}
               </p>
               <button
                 onClick={() => handleButtonClick(product.id, product.name)}
                 disabled={loadingStates[product.id]}
-                className="w-full bg-rose-700 text-white py-2 rounded-lg hover:bg-rose-700 transform hover:scale-[1.02] transition-all duration-300 font-semibold"
+                className="w-full bg-rose-700 text-white py-2 rounded-lg hover:bg-rose-900 transform hover:scale-[1.02] transition-all duration-300 font-semibold"
               >
                 {loadingStates[product.id] ? (
                   <svg className="animate-spin h-5 w-5 mr-2 inline" viewBox="0 0 24 24">

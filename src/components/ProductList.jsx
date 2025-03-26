@@ -46,12 +46,13 @@ const ProductList = ({ products, addToCart, loading }) => {
               key={product.id}
               className="bg-white p-4 rounded-xl shadow-sm hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300"
             >
-              <div className="relative overflow-hidden rounded-lg mb-3">
+              <div className="relative overflow-hidden rounded-lg mb-3 group">
                 <img
                   src={product.image}
                   alt={product.name}
                   className="w-full h-60 object-contain hover:scale-105 transition-transform duration-300"
                 />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
               </div>
               <h3 className="flex-auto text-lg font-semibold text-slate-900">{product.name}</h3>
               <div className="flex items-center mb-2">

@@ -316,1349 +316,1316 @@
 
 ---
 
-### Notes: `src/components/Cart.jsx`
-
-- **Purpose**: Displays the cart, calculates totals, and handles clearing or placing orders with loading states and toast notifications.
-
-1. `import React from 'react';`
-   - Imports React for component functionality.
-
-2. `import toast from 'react-hot-toast';`
-   - Imports `toast` for success notifications.
-
-3. `const Cart = ({ cart, products, clearCart, placeOrder }) => {`
-   - Defines `Cart` component with props: `cart` (items), `products` (all products), `clearCart` (function), `placeOrder` (function).
-
-4. `const getTotal = () => {`
-   - Defines a function to calculate cart total.
-
-5. `return cart.reduce((sum, item) => {`
-   - Reduces `cart` array to a single value.
-
-6. `const product = products.find((p) => p.id === item.productId);`
-   - Finds the product matching the cart item’s ID.
-
-7. `return sum + (product?.price * item.quantity || 0);`
-   - Adds item cost (price × quantity) to sum, defaults to 0 if product is missing.
-
-8. `}, 0);`
-   - Initial sum is 0.
-
-9. `};`
-   - Closes `getTotal`.
-
-10. `const handleClearCart = () => {`
-    - Defines function to clear the cart.
-
-11. `clearCart();`
-    - Calls the `clearCart` prop function (triggers `DELETE /cart` in `server.js`).
-
-12. `toast.success('Cart cleared', {`
-    - Shows a success toast.
-
-13. `duration: 3000,`
-    - Sets toast duration to 3 seconds.
-
-14. `position: 'top-center',`
-    - Positions toast at top center.
-
-15. `style: { background: '#0d9488', color: '#ffffff' },`
-    - Styles toast with teal background and white text.
-
-16. `});`
-    - Closes toast config.
-
-17. `};`
-    - Closes `handleClearCart`.
-
-18. `const handlePlaceOrder = () => {`
-    - Defines function to place an order.
-
-19. `placeOrder();`
-    - Calls the `placeOrder` prop (triggers `POST /orders` in `server.js`).
-
-20. `toast.success('Order placed successfully', {`
-    - Shows a success toast.
-
-21. `duration: 3000,`
-    - Sets duration to 3 seconds.
-
-22. `position: 'top-center',`
-    - Positions toast at top center.
-
-23. `style: { background: '#0d9488', color: '#ffffff' },`
-    - Styles toast.
-
-24. `});`
-    - Closes toast config.
-
-25. `};`
-    - Closes `handlePlaceOrder`.
-
-26. `const [loadingStates, setLoadingStates] = React.useState({`
-    - Declares state for button loading indicators.
-
-27. `clearCart: false,`
-    - Initial loading state for "Clear Cart" is false (not loading).
-
-28. `placeOrder: false`
-    - Initial loading state for "Place Order" is false.
-
-29. `});`
-    - Closes initial state object.
-
-30. `const handleButtonClick = async (action) => {`
-    - Defines async function to handle button clicks with loading simulation.
-
-31. `setLoadingStates(prev => ({ ...prev, [action]: true }));`
-    - Sets loading state to true for the clicked action (e.g., `clearCart`).
-
-32. `await new Promise(resolve => setTimeout(resolve, 500));`
-    - Simulates a 500ms delay (fake async operation).
-
-33. `if (action === 'clearCart') {`
-    - Checks if action is "Clear Cart".
-
-34. `handleClearCart();`
-    - Calls `handleClearCart`.
-
-35. `} else {`
-    - Else block for "Place Order".
-
-36. `handlePlaceOrder();`
-    - Calls `handlePlaceOrder`.
-
-37. `}`
-    - Ends if-else.
-
-38. `setLoadingStates(prev => ({ ...prev, [action]: false }));`
-    - Resets loading state to false after action.
-
-39. `};`
-    - Closes `handleButtonClick`.
-
-40. `return (`
-    - Starts JSX return.
-
-41. `<div className="bg-white p-6 rounded-lg shadow-md mb-6">`
-    - Container div with white background, padding, shadow, and bottom margin.
-
-42. `<h2 className="text-xl font-semibold mb-4 text-teal-700">Your Cart</h2>`
-    - Heading for cart section.
-
-43. `{cart.length === 0 ? (`
-    - Ternary check: if cart is empty.
-
-44. `<p className="text-gray-500">Your cart is empty</p>`
-    - Shows message if cart is empty.
-
-45. `) : (`
-    - Else block for non-empty cart.
-
-46. `<>`
-    - Fragment to group elements.
-
-47. `{cart.map((item) => {`
-    - Maps over cart items.
-
-48. `const product = products.find((p) => p.id === item.productId);`
-    - Finds matching product.
-
-49. `return (`
-    - Returns JSX for each item.
-
-50. `<div key={item.productId} className="border-b py-2 flex items-center">`
-    - Div for item with bottom border, padding, and flex layout.
-
-51. `<img`
-    - Starts image tag.
-
-52. `src={product?.image}`
-    - Sets image source to product’s URL (optional chaining for safety).
-
-53. `alt={product?.name}`
-    - Sets alt text to product name.
-
-54. `className="w-16 h-16 object-contain rounded mr-2"`
-    - Styles image: 64px × 64px, contained, rounded, with right margin.
-
-55. `/>`
-    - Closes image tag.
-
-56. `<div>`
-    - Div for item details.
-
-57. `<p className="text-gray-800">{product?.name}</p>`
-    - Shows product name.
-
-58. `<p className="text-sm text-gray-600">`
-    - Paragraph for quantity and price.
-
-59. `{item.quantity} x GHS {product?.price.toFixed(2)} = GHS`
-    - Displays quantity and unit price.
-
-60. `{(product?.price * item.quantity).toFixed(2)}`
-    - Calculates and shows item total.
-
-61. `</p>`
-    - Closes paragraph.
-
-62. `</div>`
-    - Closes item details div.
-
-63. `);`
-    - Closes return.
-
-64. `})}`
-    - Closes map.
-
-65. `<p className="font-bold text-lg mt-4">Total: GHS {getTotal().toFixed(2)}</p>`
-    - Shows cart total.
-
-66. `<div className="mt-4 space-y-2">`
-    - Container for buttons with vertical spacing.
-
-67. `<button`
-    - Starts "Clear Cart" button.
-
-68. `onClick={() => handleButtonClick('clearCart')}`
-    - Calls `handleButtonClick` with "clearCart" action.
-
-69. `disabled={loadingStates.clearCart}`
-    - Disables button if loading.
-
-70. `className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-300"`
-    - Styles button: red, full-width, hover effect.
-
-71. `>`
-    - Opens button content.
-
-72. `{loadingStates.clearCart ? (`
-    - Ternary: if loading.
-
-73. `<svg className="animate-spin h-5 w-5 mr-2 inline" viewBox="0 0 24 24">`
-    - Spinner SVG when loading.
-
-74. `<circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />`
-    - Spinner circle background.
-
-75. `<path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />`
-    - Spinner animated path.
-
-76. `</svg>`
-    - Closes spinner SVG.
-
-77. `) : 'Clear Cart'}`
-    - Shows "Clear Cart" text if not loading.
-
-78. `</button>`
-    - Closes "Clear Cart" button.
-
-79. `<button`
-    - Starts "Place Order" button.
-
-80. `onClick={() => handleButtonClick('placeOrder')}`
-    - Calls `handleButtonClick` with "placeOrder".
-
-81. `disabled={loadingStates.placeOrder}`
-    - Disables button if loading.
-
-82. `className="w-full bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 transition duration-300"`
-    - Styles button: teal, full-width, hover effect.
-
-83. `>`
-    - Opens button content.
-
-84. `{loadingStates.placeOrder ? (`
-    - Ternary: if loading.
-
-85. `<svg className="animate-spin h-5 w-5 mr-2 inline" viewBox="0 0 24 24">`
-    - Spinner SVG.
-
-86. `<circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />`
-    - Spinner circle.
-
-87. `<path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />`
-    - Spinner path.
-
-88. `</svg>`
-    - Closes spinner.
-
-89. `) : 'Place Order'}`
-    - Shows "Place Order" text if not loading.
-
-90. `</button>`
-    - Closes "Place Order" button.
-
-91. `</div>`
-    - Closes button container.
-
-92. `</>`
-    - Closes fragment.
-
-93. `)}`
-    - Closes ternary.
-
-94. `</div>`
-    - Closes outer div.
-
-95. `);`
-    - Closes return.
-
-96. `};`
-    - Closes component.
-
-97. `export default Cart;`
-    - Exports `Cart` component.
-
----
-
-### Notes: `src/components/Orders.jsx`
-
-- **Purpose**: Displays past orders with product details and totals.
-
-1. `import React from 'react';`
-   - Imports React.
-
-2. `const Orders = ({ orders, products }) => {`
-   - Defines `Orders` component with props: `orders` (order history), `products` (all products).
-
-3. `return (`
-   - Starts JSX return.
-
-4. `<div className="bg-white p-6 rounded-lg shadow-md">`
-   - Container with white background, padding, and shadow.
-
-5. `<h2 className="text-xl font-semibold mb-4 text-teal-700">Your Orders</h2>`
-   - Heading for orders section.
-
-6. `{orders.length === 0 ? (`
-   - Ternary: if no orders.
-
-7. `<p className="text-gray-500">No orders yet</p>`
-   - Shows message if no orders.
-
-8. `) : (`
-   - Else block for orders.
-
-9. `orders.map((order) => (`
-   - Maps over orders.
-
-10. `<div key={order.orderId} className="border-b py-2 last:border-b-0">`
-    - Div for each order, no border on last item.
-
-11. `<p className="font-semibold text-gray-800">Order #{order.orderId}</p>`
-    - Shows order ID.
-
-12. `{order.items.map((item) => {`
-    - Maps over items in the order.
-
-13. `const product = products.find((p) => p.id === item.productId);`
-    - Finds matching product.
-
-14. `return (`
-    - Returns JSX for each item.
-
-15. `<div key={item.productId} className="flex items-center text-sm text-gray-600">`
-    - Div for item with flex layout.
-
-16. `<img`
-    - Starts image tag.
-
-17. `src={product?.image}`
-    - Sets image source to product’s URL.
-
-18. `alt={product?.name}`
-    - Sets alt text.
-
-19. `className="w-12 h-12 object-contain rounded mr-2"`
-    - Styles image: 48px × 48px, contained, rounded.
-
-20. `/>`
-    - Closes image.
-
-21. `<p>`
-    - Starts paragraph.
-
-22. `{product?.name} - {item.quantity} x GHS {item.price.toFixed(2)} = GHS`
-    - Shows name, quantity, and unit price.
-
-23. `{(item.quantity * item.price).toFixed(2)}`
-    - Calculates item total.
-
-24. `</p>`
-    - Closes paragraph.
-
-25. `);`
-    - Closes return.
-
-26. `})}`
-    - Closes item map.
-
-27. `<p className="font-bold text-teal-600 mt-2">Total: GHS {order.total.toFixed(2)}</p>`
-    - Shows order total.
-
-28. `</div>`
-    - Closes order div.
-
-29. `))`
-    - Closes order map.
-
-30. `)}`
-    - Closes ternary.
-
-31. `</div>`
-    - Closes outer div.
-
-32. `);`
-    - Closes return.
-
-33. `};`
-    - Closes component.
-
-34. `export default Orders;`
-    - Exports `Orders` component.
-
----
-
-### Notes: `src/components/ProductList.jsx`
-
-- **Purpose**: Displays products with images and "Add to Cart" buttons, includes shimmer effects for loading states.
-
-1. `import React from 'react';`
-   - Imports React for component functionality.
-
-2. `import toast from 'react-hot-toast';`
-   - Imports `toast` for success notifications.
-
-3. `import { ShimmerThumbnail } from 'react-shimmer-effects';`
-   - Imports `ShimmerThumbnail` from `react-shimmer-effects` for loading placeholders.
-
-4. `const ProductList = ({ products, addToCart, loading }) => {`
-   - Defines `ProductList` with props: `products` (array), `addToCart` (function), `loading` (boolean for fetch status).
-
-5. `const handleAddToCart = (productId, productName) => {`
-   - Defines function to add item to cart.
-
-6. `addToCart(productId);`
-   - Calls `addToCart` prop (triggers `POST /cart` in `server.js`).
-
-7. `toast.success(`${productName} added to cart`, {`
-   - Shows success toast.
-
-8. `duration: 3000,`
-   - Sets duration to 3 seconds.
-
-9. `position: 'top-center',`
-   - Positions toast.
-
-10. `style: {`
-    - Starts style object.
-
-11. `background: '#0d9488',`
-    - Sets teal background.
-
-12. `color: '#ffffff',`
-    - Sets white text.
-
-13. `},`
-    - Closes style.
-
-14. `});`
-    - Closes toast.
-
-15. `};`
-    - Closes `handleAddToCart`.
-
-16. `const [loadingStates, setLoadingStates] = React.useState({});`
-    - Declares state for button loading indicators, initially empty.
-
-17. `const handleButtonClick = async (productId, productName) => {`
-    - Defines async function for button clicks.
-
-18. `setLoadingStates(prev => ({ ...prev, [productId]: true }));`
-    - Sets loading state to true for the product ID.
-
-19. `await new Promise(resolve => setTimeout(resolve, 500));`
-    - Simulates 500ms delay for button action.
-
-20. `handleAddToCart(productId, productName);`
-    - Calls `handleAddToCart`.
-
-21. `setLoadingStates(prev => ({ ...prev, [productId]: false }));`
-    - Resets loading state.
-
-22. `};`
-    - Closes `handleButtonClick`.
-
-23. `return (`
-    - Starts JSX return.
-
-24. `<div className="container mx-auto px-4 max-w-6xl">`
-    - Container with centered content, padding, and max width.
-
-25. `<h2 className="text-3xl font-bold mb-8 text-teal-700 text-center">`
-    - Heading for product list.
-
-26. `Our Featured Products`
-    - Heading text.
-
-27. `</h2>`
-    - Closes heading.
-
-28. `{loading ? (`
-    - Ternary: if `loading` is true (fetching products).
-
-29. `<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">`
-    - Grid layout matching product display.
-
-30. `{[...Array(6)].map((_, index) => (`
-    - Creates 6 shimmer placeholders using an array.
-
-31. `<ShimmerThumbnail key={index} height={350} width={300} rounded />`
-    - Renders a shimmer effect: 350px tall, 300px wide, rounded corners.
-
-32. `))}`
-    - Closes shimmer map.
-
-33. `</div>`
-    - Closes shimmer grid.
-
-34. `) : products.length === 0 ? (`
-    - Else-if: if not loading and no products.
-
-35. `<p className="text-gray-500 text-center text-lg">No products found.</p>`
-    - Shows message if empty.
-
-36. `) : (`
-    - Else: if not loading and products exist.
-
-37. `<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">`
-    - Responsive grid for products.
-
-38. `{products.map((product) => (`
-    - Maps over products.
-
-39. `<div`
-    - Starts product card.
-
-40. `key={product.id}`
-    - Unique key for React.
-
-41. `className="bg-white p-4 rounded-xl shadow-sm hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300"`
-    - Styles card: white, padding, shadow, hover effects.
-
-42. `>`
-    - Opens card content.
-
-43. `<div className="relative overflow-hidden rounded-lg mb-3">`
-    - Container for image with overflow handling.
-
-44. `<img`
-    - Starts image.
-
-45. `src={product.image}`
-    - Sets image URL.
-
-46. `alt={product.name}`
-    - Sets alt text.
-
-47. `className="w-full h-60 object-contain hover:scale-105 transition-transform duration-300"`
-    - Styles image: full width, 240px height, contained, zoom on hover.
-
-48. `/>`
-    - Closes image.
-
-49. `</div>`
-    - Closes image container.
-
-50. `<h3 className="text-lg font-bold text-gray-800 mb-2">{product.name}</h3>`
-    - Shows product name.
-
-51. `<div className="flex items-center mb-2">`
-    - Container for category.
-
-52. `<span className="px-3 py-1 bg-teal-100 text-teal-800 rounded-full text-sm">`
-    - Styled category tag.
-
-53. `{product.category}`
-    - Shows category.
-
-54. `</span>`
-    - Closes tag.
-
-55. `</div>`
-    - Closes category container.
-
-56. `<p className="text-xl font-bold text-teal-600 mb-3">`
-    - Starts price.
-
-57. `GHS {product.price.toFixed(2)}`
-    - Shows price in GHS.
-
-58. `</p>`
-    - Closes price.
-
-59. `<button`
-    - Starts "Add to Cart" button.
-
-60. `onClick={() => handleButtonClick(product.id, product.name)}`
-    - Calls `handleButtonClick`.
-
-61. `disabled={loadingStates[product.id]}`
-    - Disables button if loading.
-
-62. `className="w-full bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 transform hover:scale-[1.02] transition-all duration-300 font-semibold"`
-    - Styles button: teal, full-width, hover effects.
-
-63. `>`
-    - Opens button content.
-
-64. `{loadingStates[product.id] ? (`
-    - Ternary: if button is loading.
-
-65. `<svg className="animate-spin h-5 w-5 mr-2 inline" viewBox="0 0 24 24">`
-    - Spinner SVG.
-
-66. `<circle`
-    - Starts spinner circle.
-
-67. `className="opacity-25"`
-    - Sets circle opacity.
-
-68. `cx="12"`
-    - Centers circle x.
-
-69. `cy="12"`
-    - Centers circle y.
-
-70. `r="10"`
-    - Sets circle radius.
-
-71. `stroke="currentColor"`
-    - Uses current color for stroke.
-
-72. `strokeWidth="4"`
-    - Sets stroke width.
-
-73. `fill="none"`
-    - No fill for circle.
-
-74. `/>`
-    - Closes circle.
-
-75. `<path`
-    - Starts spinner path.
-
-76. `className="opacity-75"`
-    - Sets path opacity.
-
-77. `fill="currentColor"`
-    - Fills path with current color.
-
-78. `d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"`
-    - Defines spinner animation path.
-
-79. `/>`
-    - Closes path.
-
-80. `</svg>`
-    - Closes spinner.
-
-81. `) : 'Add to Cart'}`
-    - Shows "Add to Cart" if not loading.
-
-82. `</button>`
-    - Closes button.
-
-83. `</div>`
-    - Closes product card.
-
-84. `))}`
-    - Closes map.
-
-85. `</div>`
-    - Closes grid.
-
-86. `)}`
-    - Closes ternary.
-
-87. `</div>`
-    - Closes outer div.
-
-88. `);`
-    - Closes return.
-
-89. `};`
-    - Closes component.
-
-90. `export default ProductList;`
-    - Exports `ProductList`.
+Below are the full, line-by-line notes for the updated versions of `App.jsx`, `ProductList.jsx`, `Cart.jsx`, and `Orders.jsx` from your latest submission. Each line is listed with its explanation, reflecting all changes (e.g., new video hero, color updates like `rose-700`, toast styles). I’ve avoided saying "unchanged" and provided fresh explanations for every line, referencing your current code as of this submission. These align with your e-commerce site’s structure and include prior updates like `react-shimmer-effects` and the CSS fix with `output.css`.
 
 ---
 
 ### Notes: `src/App.jsx`
-
-- **Purpose**: Main component managing state, fetching data, and rendering the UI with a hero section and shimmer loading.
+- **Purpose**: Main component managing state, fetching data, and rendering the UI with a video hero section and Tailwind styles.
 
 1. `import { useState, useEffect } from 'react';`
-   - Imports React hooks: `useState` for state, `useEffect` for side effects.
+   - Imports `useState` for managing component state and `useEffect` for handling side effects like data fetching from React.
 
 2. `import axios from 'axios';`
-   - Imports `axios` for HTTP requests.
+   - Imports `axios` library to make HTTP requests to the backend (`server.js`) for products, cart, and orders.
 
 3. `import ProductList from './components/ProductList';`
-   - Imports `ProductList` component.
+   - Imports the `ProductList` component to display products with shimmer effects and "Add to Cart" functionality.
 
 4. `import Cart from './components/Cart';`
-   - Imports `Cart` component.
+   - Imports the `Cart` component to show cart items, totals, and handle clearing or placing orders.
 
 5. `import Orders from './components/Orders';`
-   - Imports `Orders` component.
+   - Imports the `Orders` component to display the user’s order history with product details.
 
 6. `import { Toaster } from 'react-hot-toast';`
-   - Imports `Toaster` for notifications.
+   - Imports `Toaster` from `react-hot-toast` to render toast notifications (e.g., "Cart cleared") across the app.
 
 7. `function App() {`
-   - Defines `App` component.
+   - Defines the `App` functional component, the root of the React frontend.
 
 8. `const [products, setProducts] = useState([]);`
-   - State for products, initially empty.
+   - Declares `products` state (array of product objects) and `setProducts` to update it, initialized as empty.
 
 9. `const [cart, setCart] = useState([]);`
-   - State for cart, initially empty.
+   - Declares `cart` state (array of cart items) and `setCart` to update it, initialized as empty.
 
 10. `const [orders, setOrders] = useState([]);`
-    - State for orders, initially empty.
+    - Declares `orders` state (array of past orders) and `setOrders` to update it, initialized as empty.
 
 11. `const [searchTerm, setSearchTerm] = useState('');`
-    - State for search term, initially empty.
+    - Declares `searchTerm` state (string for search input) and `setSearchTerm` to update it, initialized as empty.
 
 12. `const [loading, setLoading] = useState(true);`
-    - State for loading status, initially true (shows shimmer on mount).
+    - Declares `loading` state (boolean for fetch status) and `setLoading` to update it, initialized as `true` to show shimmer on load.
 
 13. `useEffect(() => {`
-    - Sets up effect to run on mount.
+    - Sets up a `useEffect` hook to run side effects (fetching data) when the component mounts.
 
 14. `fetchProducts();`
-    - Calls `fetchProducts` to load products.
+    - Calls `fetchProducts` to load products from the backend on initial render.
 
 15. `fetchCart();`
-    - Calls `fetchCart` to load cart.
+    - Calls `fetchCart` to load the cart from the backend on initial render.
 
 16. `fetchOrders();`
-    - Calls `fetchOrders` to load orders.
+    - Calls `fetchOrders` to load orders from the backend on initial render.
 
 17. `}, []);`
-    - Empty dependency array: runs once on mount.
+    - Empty dependency array ensures the `useEffect` runs only once when the component mounts.
 
 18. `const fetchProducts = async () => {`
-    - Defines async function to fetch products.
+    - Defines an async function `fetchProducts` to retrieve products from `server.js`.
 
 19. `setLoading(true);`
-    - Sets `loading` to true to show shimmer.
+    - Sets `loading` to `true` to trigger shimmer effects in `ProductList` while fetching.
 
 20. `try {`
-    - Starts error handling.
+    - Starts a try block to handle potential errors during the HTTP request.
 
 21. `const response = await axios.get('http://localhost:3000/products', {`
-    - Sends `GET` request to `/products` in `server.js`.
+    - Makes an async `GET` request to `http://localhost:3000/products` using `axios`.
 
 22. `params: { name: searchTerm },`
-    - Adds search term as query param.
+    - Adds query parameter `name` with the current `searchTerm` to filter products.
 
 23. `});`
-    - Closes request options.
+    - Closes the `axios.get` options object.
 
 24. `setProducts(response.data);`
-    - Updates `products` state with response.
+    - Updates `products` state with the response data (array of products).
 
 25. `await new Promise(resolve => setTimeout(resolve, 2000));`
-    - Adds a 2-second delay to keep shimmer visible.
+    - Adds a 2-second delay using a Promise and `setTimeout` to keep shimmer visible longer.
 
 26. `} catch (error) {`
-    - Catches errors.
+    - Catches any errors from the `try` block (e.g., network issues).
 
 27. `console.error('Error fetching products:', error);`
-    - Logs errors.
+    - Logs the error to the console for debugging.
 
 28. `} finally {`
-    - Runs regardless of success or failure.
+    - Runs code in the `finally` block regardless of success or failure.
 
 29. `setLoading(false);`
-    - Sets `loading` to false after delay, hiding shimmer.
+    - Sets `loading` to `false` to hide shimmer and show products after the delay.
 
 30. `}`
-    - Ends try-catch-finally.
+    - Closes the `finally` block.
 
 31. `};`
-    - Closes `fetchProducts`.
+    - Closes the `fetchProducts` function.
 
 32. `const fetchCart = async () => {`
-    - Defines async function to fetch cart.
+    - Defines an async function `fetchCart` to retrieve cart items from `server.js`.
 
 33. `try {`
-    - Starts error handling.
+    - Starts a try block for error handling.
 
 34. `const response = await axios.get('http://localhost:3000/cart');`
-    - Sends `GET` request to `/cart`.
+    - Makes an async `GET` request to `http://localhost:3000/cart`.
 
 35. `setCart(response.data);`
-    - Updates `cart` state.
+    - Updates `cart` state with the response data (array of cart items).
 
 36. `} catch (error) {`
-    - Catches errors.
+    - Catches any errors from the request.
 
 37. `console.error('Error fetching cart:', error);`
-    - Logs errors.
+    - Logs the error to the console.
 
 38. `}`
-    - Ends try-catch.
+    - Closes the `try/catch` block.
 
 39. `};`
-    - Closes `fetchCart`.
+    - Closes the `fetchCart` function.
 
 40. `const fetchOrders = async () => {`
-    - Defines async function to fetch orders.
+    - Defines an async function `fetchOrders` to retrieve orders from `server.js`.
 
 41. `try {`
-    - Starts error handling.
+    - Starts a try block for error handling.
 
 42. `const response = await axios.get('http://localhost:3000/orders');`
-    - Sends `GET` request to `/orders`.
+    - Makes an async `GET` request to `http://localhost:3000/orders`.
 
 43. `setOrders(response.data);`
-    - Updates `orders` state.
+    - Updates `orders` state with the response data (array of orders).
 
 44. `} catch (error) {`
-    - Catches errors.
+    - Catches any errors from the request.
 
 45. `console.error('Error fetching orders:', error);`
-    - Logs errors.
+    - Logs the error to the console.
 
 46. `}`
-    - Ends try-catch.
+    - Closes the `try/catch` block.
 
 47. `};`
-    - Closes `fetchOrders`.
+    - Closes the `fetchOrders` function.
 
 48. `const addProduct = async (product) => {`
-    - Defines async function to add product.
+    - Defines an async function `addProduct` to send a new product to `server.js`.
 
 49. `try {`
-    - Starts error handling.
+    - Starts a try block for error handling.
 
 50. `const response = await axios.post('http://localhost:3000/products', product);`
-    - Sends `POST` to `/products` with product data.
+    - Makes an async `POST` request to `http://localhost:3000/products` with the product object.
 
 51. `setProducts([...products, response.data]);`
-    - Adds new product to state.
+    - Appends the new product from the response to the `products` state array.
 
 52. `} catch (error) {`
-    - Catches errors.
+    - Catches any errors from the request.
 
 53. `console.error('Error adding product:', error);`
-    - Logs errors.
+    - Logs the error to the console.
 
 54. `}`
-    - Ends try-catch.
+    - Closes the `try/catch` block.
 
 55. `};`
-    - Closes `addProduct`.
+    - Closes the `addProduct` function.
 
 56. `const addToCart = async (productId) => {`
-    - Defines async function to add to cart.
+    - Defines an async function `addToCart` to add a product to the cart via `server.js`.
 
 57. `try {`
-    - Starts error handling.
+    - Starts a try block for error handling.
 
 58. `await axios.post('http://localhost:3000/cart', { productId, quantity: 1 });`
-    - Sends `POST` to `/cart`.
+    - Makes an async `POST` request to `http://localhost:3000/cart` with product ID and quantity 1.
 
 59. `fetchCart();`
-    - Refetches cart to update state.
+    - Refetches the cart to update the UI with the latest cart state.
 
 60. `} catch (error) {`
-    - Catches errors.
+    - Catches any errors from the request.
 
 61. `console.error('Error adding to cart:', error);`
-    - Logs errors.
+    - Logs the error to the console.
 
 62. `}`
-    - Ends try-catch.
+    - Closes the `try/catch` block.
 
 63. `};`
-    - Closes `addToCart`.
+    - Closes the `addToCart` function.
 
 64. `const clearCart = async () => {`
-    - Defines async function to clear cart.
+    - Defines an async function `clearCart` to empty the cart via `server.js`.
 
 65. `try {`
-    - Starts error handling.
+    - Starts a try block for error handling.
 
 66. `await axios.delete('http://localhost:3000/cart');`
-    - Sends `DELETE` to `/cart`.
+    - Makes an async `DELETE` request to `http://localhost:3000/cart` to clear it.
 
 67. `fetchCart();`
-    - Refetches cart.
+    - Refetches the cart to reflect the cleared state in the UI.
 
 68. `} catch (error) {`
-    - Catches errors.
+    - Catches any errors from the request.
 
 69. `console.error('Error clearing cart:', error);`
-    - Logs errors.
+    - Logs the error to the console.
 
 70. `}`
-    - Ends try-catch.
+    - Closes the `try/catch` block.
 
 71. `};`
-    - Closes `clearCart`.
+    - Closes the `clearCart` function.
 
 72. `const placeOrder = async () => {`
-    - Defines async function to place order.
+    - Defines an async function `placeOrder` to create an order from the cart via `server.js`.
 
 73. `try {`
-    - Starts error handling.
+    - Starts a try block for error handling.
 
 74. `await axios.post('http://localhost:3000/orders');`
-    - Sends `POST` to `/orders`.
+    - Makes an async `POST` request to `http://localhost:3000/orders` to place the order.
 
 75. `fetchCart();`
-    - Refetches cart (cleared by server).
+    - Refetches the cart (cleared by the server after ordering).
 
 76. `fetchOrders();`
-    - Refetches orders.
+    - Refetches orders to update the UI with the new order.
 
 77. `} catch (error) {`
-    - Catches errors.
+    - Catches any errors from the request.
 
 78. `console.error('Error placing order:', error);`
-    - Logs errors.
+    - Logs the error to the console.
 
 79. `}`
-    - Ends try-catch.
+    - Closes the `try/catch` block.
 
 80. `};`
-    - Closes `placeOrder`.
+    - Closes the `placeOrder` function.
 
 81. `const handleSearch = (e) => {`
-    - Defines function for search input.
+    - Defines a function `handleSearch` to update the search term and refetch products.
 
 82. `setSearchTerm(e.target.value);`
-    - Updates `searchTerm`.
+    - Updates `searchTerm` state with the input’s current value.
 
 83. `fetchProducts();`
-    - Refetches products with new term.
+    - Calls `fetchProducts` to filter products based on the new search term.
 
 84. `};`
-    - Closes `handleSearch`.
+    - Closes the `handleSearch` function.
 
 85. `return (`
-    - Starts JSX return.
+    - Starts the JSX return statement to render the UI.
 
 86. `<div className="min-h-screen bg-gray-50">`
-    - Outer div with full height and light gray background.
+    - Outer div that ensures the app takes up at least the full screen height with a light gray background.
 
-87. `<header className="bg-teal-600 text-white p-4 shadow-md">`
-    - Header with teal background and shadow.
+87. `<section className="bg-gradient-to-r from-rose-700 to-amber-400 text-white relative overflow-hidden">`
+    - Defines a hero section with a gradient background from rose to amber, white text, positioned relatively with hidden overflow.
 
-88. `<div className="container mx-auto flex justify-between items-center">`
-    - Container for header content.
+88. `<div className="absolute inset-0 bg-black/40 z-10"></div>`
+    - Adds a semi-transparent black overlay across the hero section for contrast, with a z-index of 10.
 
-89. `<h1 className="text-2xl font-bold">E-Commerce</h1>`
-    - App title.
+89. `<video`
+    - Starts a `video` element for the background video.
 
-90. `<div className="w-64">`
-    - Div for search input.
+90. `className="absolute inset-0 w-full h-full object-cover"`
+    - Styles the video to cover the entire hero section, positioned absolutely.
 
-91. `<input`
-    - Starts search input.
+91. `autoPlay`
+    - Makes the video play automatically when loaded.
 
-92. `type="text"`
-    - Sets input type.
+92. `loop`
+    - Loops the video continuously.
 
-93. `placeholder="Search products..."`
-    - Placeholder text.
+93. `muted`
+    - Mutes the video to avoid unwanted sound.
 
-94. `value={searchTerm}`
-    - Binds to `searchTerm`.
+94. `playsInline`
+    - Ensures the video plays inline (no fullscreen prompt on mobile).
 
-95. `onChange={handleSearch}`
-    - Calls `handleSearch` on change.
+95. `>`
+    - Opens the video content.
 
-96. `className="w-full p-2 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-teal-300"`
-    - Styles input.
+96. `<source src="/hero-video.mp4" type="video/mp4" />`
+    - Specifies the video file source (`/hero-video.mp4`) and type (`video/mp4`).
 
-97. `/>`
-    - Closes input.
+97. `Your Browser Does Not Support Background Video.`
+    - Fallback text if the browser doesn’t support video.
 
-98. `</div>`
-    - Closes search div.
+98. `</video>`
+    - Closes the video element.
 
-99. `</div>`
-    - Closes header container.
+99. `<div className="relative z-20">`
+    - Wraps the hero content with a higher z-index (20) to appear above the video and overlay.
 
-100. `</header>`
-     - Closes header.
+100. `<header className="transparent p-4">`
+     - Defines a header with a transparent background and 4 units of padding.
 
-101. `<section className="bg-gradient-to-r from-teal-700 to-teal-900 text-white py-20 relative overflow-hidden">`
-     - Hero section with gradient background.
+101. `<div className="container mx-auto flex justify-between items-center">`
+     - Centers a container with flex layout, justifying content between edges and aligning items vertically.
 
-102. `<div className="absolute inset-0 bg-pattern opacity-10"></div>`
-     - Background pattern (assumes CSS exists, though not critical since `output.css` handles Tailwind).
+102. `<h1 className="text-2xl font-bold">E-Commerce</h1>`
+     - Renders the app title in a bold, 2xl-sized font.
 
-103. `<div className="container mx-auto flex items-center justify-between px-4 relative z-10">`
-     - Hero content container.
+103. `<div className="w-64">`
+     - Creates a div for the search input with a fixed width of 64 units (256px).
 
-104. `<div className="max-w-lg">`
-     - Left side of hero (text).
+104. `<input`
+     - Starts an input element for searching products.
 
-105. `<span className="bg-teal-500 text-sm px-4 py-1 rounded-full mb-4 inline-block">Special Offers</span>`
-     - Tag for special offers.
+105. `type="text"`
+     - Sets the input type to text.
 
-106. `<h2 className="text-5xl font-bold mb-6 leading-tight">Discover Amazing Products at <span className="text-teal-300">Unbeatable Prices</span></h2>`
-     - Hero heading with highlighted text.
+106. `placeholder="Search products..."`
+     - Displays placeholder text when the input is empty.
 
-107. `<p className="text-xl mb-8 opacity-90 leading-relaxed">Shop the latest trends and get exclusive deals today. Join thousands of satisfied customers and transform your shopping experience.</p>`
-     - Hero subtext.
+107. `value={searchTerm}`
+     - Binds the input value to the `searchTerm` state.
 
-108. `<div className="space-x-4 flex items-center">`
-     - Container for buttons.
+108. `onChange={handleSearch}`
+     - Calls `handleSearch` when the input value changes.
 
-109. `<button className="bg-white text-teal-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 flex items-center">`
-     - "Shop Now" button.
+109. `className="w-full p-2 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-rose-300"`
+     - Styles the input: full width, 2 units padding, rounded, gray text, no outline on focus, rose ring on focus.
 
-110. `Shop Now`
-     - Button text.
+110. `/>`
+     - Closes the input element (self-closing).
 
-111. `<svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">`
-     - Arrow icon.
+111. `</div>`
+     - Closes the search div.
 
-112. `<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />`
-     - Arrow path.
+112. `</div>`
+     - Closes the header container.
 
-113. `</svg>`
-     - Closes icon.
+113. `</header>`
+     - Closes the header.
 
-114. `</button>`
-     - Closes "Shop Now".
+114. `<div className="container mx-auto flex items-center justify-between px-4 py-20">`
+     - Centers a container for hero content with flex layout, 4 units x-padding, 20 units y-padding.
 
-115. `<button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-teal-600 transition duration-300">`
-     - "View Deals" button.
+115. `<div className="max-w-lg">`
+     - Limits the left-side content to a maximum width of `lg` (large).
 
-116. `View Deals`
-     - Button text.
+116. `<span className="bg-rose-800 text-sm px-4 py-1 rounded-full mb-4 inline-block">Special Offers</span>`
+     - Displays a rose-colored tag with small text, padding, rounded shape, and bottom margin.
 
-117. `</button>`
-     - Closes "View Deals".
+117. `<h2 className="text-5xl font-bold mb-6 leading-tight">Discover Amazing Products at <span className="text-teal-300">Unbeatable Prices</span></h2>`
+     - Renders a large, bold heading with tight leading, teal highlight on "Unbeatable Prices".
 
-118. `</div>`
-     - Closes button container.
+118. `<p className="text-xl mb-8 opacity-90 leading-relaxed">Shop the latest trends and get exclusive deals today. Join thousands of satisfied customers and transform your shopping experience.</p>`
+     - Shows a relaxed, slightly transparent paragraph with extra-large text and bottom margin.
 
-119. `</div>`
-     - Closes left side.
+119. `<div className="space-x-4 flex items-center">`
+     - Creates a flex container for buttons with 4 units of horizontal spacing.
 
-120. `<div className="hidden lg:block w-1/3 transform hover:scale-105 transition duration-500">`
-     - Right side (image), hidden on small screens.
+120. `<button`
+     - Starts a "Shop Now" button.
 
-121. `<div className="bg-teal-600/50 rounded-lg p-4 backdrop-blur-sm">`
-     - Image container with blur effect.
+121. `onClick={() => document.getElementById('products-section').scrollIntoView({ behavior: 'smooth' })}`
+     - Scrolls smoothly to the `products-section` div when clicked.
 
-122. `<img`
-     - Starts hero image.
+122. `className="bg-white text-rose-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 flex items-center"`
+     - Styles the button: white background, rose text, padding, rounded, bold, hover effect, flex layout.
 
-123. `src="https://img.freepik.com/free-photo/showing-cart-trolley-shopping-online-sign-graphic_53876-133967.jpg"`
-     - Image URL.
+123. `>`
+     - Opens the button content.
 
-124. `alt="Featured Products"`
-     - Alt text.
+124. `Shop Now`
+     - Text inside the "Shop Now" button.
 
-125. `className="rounded-lg shadow-lg hover:shadow-2xl transition duration-300"`
-     - Styles image.
+125. `<svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">`
+     - Adds an arrow icon, 5x5 units, with margin-left, no fill, using current color for stroke.
 
-126. `/>`
-     - Closes image.
+126. `<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />`
+     - Defines the arrow shape with rounded caps and joins, 2-unit stroke width.
 
-127. `</div>`
-     - Closes image container.
+127. `</svg>`
+     - Closes the arrow SVG.
 
-128. `</div>`
-     - Closes right side.
+128. `</button>`
+     - Closes the "Shop Now" button.
 
-129. `</div>`
-     - Closes hero container.
+129. `<button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-rose-700 transition duration-300">`
+     - Defines a "View Deals" button with white border and text, padding, rounded, bold, rose hover effect.
 
-130. `</section>`
-     - Closes hero section.
+130. `View Deals`
+     - Text inside the "View Deals" button.
 
-131. `<main className="container mx-auto py-8 px-4">`
-     - Main content area.
+131. `</button>`
+     - Closes the "View Deals" button.
 
-132. `<div className="grid grid-cols-1 lg:grid-cols-4 gap-8">`
-     - Grid layout: 1 column small, 4 large.
+132. `</div>`
+     - Closes the button container.
 
-133. `<div className="lg:col-span-3">`
-     - Left section (3 columns on large screens).
+133. `</div>`
+     - Closes the left-side hero content.
 
-134. `<ProductList products={products} addToCart={addToCart} loading={loading} />`
-     - Renders `ProductList` with `loading` prop for shimmer.
+134. `</div>`
+     - Closes the hero content container.
 
-135. `<div className="mt-8 bg-white p-6 rounded-lg shadow-md">`
-     - Form container.
+135. `</div>`
+     - Closes the z-20 wrapper.
 
-136. `<h2 className="text-xl font-semibold mb-4 text-teal-700">Add New Product</h2>`
-     - Form heading.
+136. `</section>`
+     - Closes the hero section.
 
-137. `<form`
-     - Starts form.
+137. `<main className="container mx-auto py-8 px-4">`
+     - Defines the main content area, centered with 8 units y-padding and 4 units x-padding.
 
-138. `onSubmit={(e) => {`
-     - Defines submit handler.
+138. `<div className="grid grid-cols-1 lg:grid-cols-4 gap-8">`
+     - Sets up a responsive grid: 1 column on small screens, 4 columns on large screens, with 8-unit gaps.
 
-139. `e.preventDefault();`
-     - Prevents page reload.
+139. `<div className="lg:col-span-3" id="products-section">`
+     - Defines a div spanning 3 columns on large screens, with an ID for scrolling.
 
-140. `const form = e.target;`
-     - Gets form element.
+140. `<ProductList products={products} addToCart={addToCart} loading={loading} />`
+     - Renders the `ProductList` component, passing `products`, `addToCart`, and `loading` props.
 
-141. `addProduct({`
-     - Calls `addProduct`.
+141. `<div className="mt-8 bg-white p-6 rounded-lg shadow-md">`
+     - Creates a form container with top margin, white background, padding, rounded corners, and shadow.
 
-142. `name: form.name.value,`
-     - Gets name input.
+142. `<h2 className="text-xl font-semibold mb-4 text-rose-700">Add New Product</h2>`
+     - Renders a heading for the form, extra-large, bold, rose-colored, with bottom margin.
 
-143. `category: form.category.value,`
-     - Gets category input.
+143. `<form`
+     - Starts a form element for adding products.
 
-144. `price: parseFloat(form.price.value),`
-     - Gets price as float.
+144. `onSubmit={(e) => {`
+     - Defines an inline submit handler for the form.
 
-145. `image: form.image.value,`
-     - Gets image URL.
+145. `e.preventDefault();`
+     - Prevents the default form submission (page reload).
 
-146. `});`
-     - Closes `addProduct` call.
+146. `const form = e.target;`
+     - Gets the form element from the event object.
 
-147. `form.reset();`
-     - Resets form.
+147. `addProduct({`
+     - Calls `addProduct` with an object constructed from form inputs.
 
-148. `}}`
-     - Closes submit handler.
+148. `name: form.name.value,`
+     - Extracts the value of the `name` input field.
 
-149. `className="space-y-4"`
-     - Adds spacing between form elements.
+149. `category: form.category.value,`
+     - Extracts the value of the `category` input field.
 
-150. `>`
-     - Opens form content.
+150. `price: parseFloat(form.price.value),`
+     - Extracts and converts the `price` input value to a float.
 
-151. `<input`
-     - Starts name input.
+151. `image: form.image.value,`
+     - Extracts the value of the `image` input field (URL).
 
-152. `name="name"`
-     - Sets name attribute.
+152. `});`
+     - Closes the `addProduct` call.
 
-153. `placeholder="Product Name"`
-     - Placeholder text.
+153. `form.reset();`
+     - Resets the form fields to empty after submission.
 
-154. `className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"`
-     - Styles input.
+154. `}}`
+     - Closes the submit handler.
 
-155. `/>`
-     - Closes name input.
+155. `className="space-y-4"`
+     - Adds 4 units of vertical spacing between form elements.
 
-156. `<input`
-     - Starts category input.
+156. `>`
+     - Opens the form content.
 
-157. `name="category"`
-     - Sets name.
+157. `<input`
+     - Starts an input for the product name.
 
-158. `placeholder="Category"`
-     - Placeholder.
+158. `name="name"`
+     - Sets the input’s name attribute to `name` for form reference.
 
-159. `className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"`
-     - Styles input.
+159. `placeholder="Product Name"`
+     - Displays placeholder text when empty.
 
-160. `/>`
-     - Closes category input.
+160. `className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-700"`
+     - Styles the input: full width, 3 units padding, bordered, rounded, no outline on focus, rose ring on focus.
 
-161. `<input`
-     - Starts price input.
+161. `/>`
+     - Closes the name input (self-closing).
 
-162. `name="price"`
-     - Sets name.
+162. `<input`
+     - Starts an input for the product category.
 
-163. `type="number"`
-     - Sets type to number.
+163. `name="category"`
+     - Sets the input’s name attribute to `category`.
 
-164. `step="0.01"`
-     - Allows decimals.
+164. `placeholder="Category"`
+     - Displays placeholder text when empty.
 
-165. `placeholder="Price"`
-     - Placeholder.
+165. `className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-700"`
+     - Styles the input: full width, 3 units padding, bordered, rounded, no outline on focus, rose ring on focus.
 
-166. `className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"`
-     - Styles input.
+166. `/>`
+     - Closes the category input.
 
-167. `/>`
-     - Closes price input.
+167. `<input`
+     - Starts an input for the product price.
 
-168. `<input`
-     - Starts image input.
+168. `name="price"`
+     - Sets the input’s name attribute to `price`.
 
-169. `name="image"`
-     - Sets name.
+169. `type="number"`
+     - Sets the input type to number for numeric entry.
 
-170. `placeholder="Image URL"`
-     - Placeholder.
+170. `step="0.01"`
+     - Allows decimal input with two decimal places.
 
-171. `className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"`
-     - Styles input.
+171. `placeholder="Price"`
+     - Displays placeholder text when empty.
 
-172. `/>`
-     - Closes image input.
+172. `className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-700"`
+     - Styles the input: full width, 3 units padding, bordered, rounded, no outline on focus, rose ring on focus.
 
-173. `<button`
-     - Starts submit button.
+173. `/>`
+     - Closes the price input.
 
-174. `type="submit"`
-     - Sets button type.
+174. `<input`
+     - Starts an input for the product image URL.
 
-175. `className="w-full bg-teal-600 text-white p-3 rounded-lg hover:bg-teal-700 transition duration-300"`
-     - Styles button.
+175. `name="image"`
+     - Sets the input’s name attribute to `image`.
 
-176. `>`
-     - Opens button content.
+176. `placeholder="Image URL"`
+     - Displays placeholder text when empty.
 
-177. `Add Product`
-     - Button text.
+177. `className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-700"`
+     - Styles the input: full width, 3 units padding, bordered, rounded, no outline on focus, rose ring on focus.
 
-178. `</button>`
-     - Closes button.
+178. `/>`
+     - Closes the image input.
 
-179. `</form>`
-     - Closes form.
+179. `<button`
+     - Starts a submit button for the form.
 
-180. `</div>`
-     - Closes form container.
+180. `type="submit"`
+     - Sets the button type to submit, triggering the form’s `onSubmit`.
 
-181. `</div>`
-     - Closes left section.
+181. `className="w-full bg-rose-700 text-white p-3 rounded-lg hover:bg-rose-700 transition duration-300"`
+     - Styles the button: full width, rose background, white text, padding, rounded, same hover color (likely intended as `hover:bg-rose-900`), 300ms transition.
 
-182. `<aside className="lg:col-span-1 sticky top-4 h-fit">`
-     - Sidebar (1 column, sticky).
+182. `>`
+     - Opens the button content.
 
-183. `<Cart cart={cart} products={products} clearCart={clearCart} placeOrder={placeOrder} />`
-     - Renders `Cart`.
+183. `Add Product`
+     - Text inside the submit button.
 
-184. `<Orders orders={orders} products={products} />`
-     - Renders `Orders`.
+184. `</button>`
+     - Closes the submit button.
 
-185. `</aside>`
-     - Closes sidebar.
+185. `</form>`
+     - Closes the form element.
 
 186. `</div>`
-     - Closes grid.
+     - Closes the form container.
 
-187. `</main>`
-     - Closes main.
+187. `</div>`
+     - Closes the left grid section (3 columns).
 
-188. `<Toaster />`
-     - Renders toast container.
+188. `<aside className="lg:col-span-1 sticky top-4 h-fit">`
+     - Defines a sidebar spanning 1 column on large screens, sticky at 4 units from top, height adjusts to content.
 
-189. `</div>`
-     - Closes outer div.
+189. `<Cart cart={cart} products={products} clearCart={clearCart} placeOrder={placeOrder} />`
+     - Renders the `Cart` component with `cart`, `products`, `clearCart`, and `placeOrder` props.
 
-190. `);`
-     - Closes return.
+190. `<Orders orders={orders} products={products} />`
+     - Renders the `Orders` component with `orders` and `products` props.
 
-191. `}`
-     - Closes `App`.
+191. `</aside>`
+     - Closes the sidebar.
 
-192. `export default App;`
-     - Exports `App`.
+192. `</div>`
+     - Closes the grid layout.
+
+193. `</main>`
+     - Closes the main content area.
+
+194. `<Toaster />`
+     - Renders the `Toaster` component to display toast notifications.
+
+195. `</div>`
+     - Closes the outer div.
+
+196. `);`
+     - Closes the JSX return statement.
+
+197. `}`
+     - Closes the `App` function.
+
+198. `export default App;`
+     - Exports the `App` component as the default export.
 
 ---
 
-### Notes: `src/index.jsx`
-
-- **Purpose**: Entry point for React app, renders `App` with CSS.
+### Notes: `src/components/ProductList.jsx`
+- **Purpose**: Displays a list of products with shimmer effects, hover animations, and "Add to Cart" buttons.
 
 1. `import React from 'react';`
-   - Imports React.
+   - Imports React for component functionality.
 
-2. `import ReactDOM from 'react-dom/client';`
-   - Imports ReactDOM for rendering.
+2. `import toast from 'react-hot-toast';`
+   - Imports `toast` from `react-hot-toast` for success notifications.
 
-3. `import App from './App.jsx';`
-   - Imports `App` component.
+3. `import { ShimmerThumbnail } from 'react-shimmer-effects';`
+   - Imports `ShimmerThumbnail` for loading placeholders from `react-shimmer-effects`.
 
-4. `import './output.css';`
-   - Imports compiled Tailwind CSS (`output.css` generated from `index.css`).
+4. `const ProductList = ({ products, addToCart, loading }) => {`
+   - Defines the `ProductList` component with props: `products` (array), `addToCart` (function), `loading` (boolean).
 
-5. `ReactDOM.createRoot(document.getElementById('root')).render(`
-   - Creates root and renders into `#root` element.
+5. `const handleAddToCart = (productId, productName) => {`
+   - Defines a function to handle adding a product to the cart.
 
-6. `<React.StrictMode>`
-   - Enables strict mode for dev checks.
+6. `addToCart(productId);`
+   - Calls the `addToCart` prop function with the product’s ID.
 
-7. `<App />`
-   - Renders `App`.
+7. `toast.success(`${productName} added to cart`, {`
+   - Displays a success toast with the product name.
 
-8. `</React.StrictMode>,`
-   - Closes strict mode.
+8. `duration: 3000,`
+   - Sets the toast duration to 3 seconds.
 
-9. `)`
-   - Closes render.
+9. `position: 'top-center',`
+   - Positions the toast at the top center of the screen.
+
+10. `style: {`
+    - Starts a style object for the toast.
+
+11. `border: '1px solid #fff400',`
+    - Adds a 1px yellow border to the toast.
+
+12. `padding: '16px',`
+    - Sets 16px padding inside the toast.
+
+13. `background: '#c70039',`
+    - Sets the toast background to a dark rose color.
+
+14. `color: '#ffffff',`
+    - Sets the toast text color to white.
+
+15. `},`
+    - Closes the style object.
+
+16. `});`
+    - Closes the toast configuration.
+
+17. `};`
+    - Closes the `handleAddToCart` function.
+
+18. `const [loadingStates, setLoadingStates] = React.useState({});`
+    - Declares a state object for button loading states, initially empty, using `useState`.
+
+19. `const handleButtonClick = async (productId, productName) => {`
+    - Defines an async function to handle "Add to Cart" button clicks with a delay.
+
+20. `setLoadingStates(prev => ({ ...prev, [productId]: true }));`
+    - Sets the loading state to `true` for the specific product ID.
+
+21. `await new Promise(resolve => setTimeout(resolve, 500));`
+    - Adds a 500ms delay to simulate an async operation.
+
+22. `handleAddToCart(productId, productName);`
+    - Calls `handleAddToCart` with the product ID and name.
+
+23. `setLoadingStates(prev => ({ ...prev, [productId]: false }));`
+    - Resets the loading state to `false` for the product ID.
+
+24. `};`
+    - Closes the `handleButtonClick` function.
+
+25. `return (`
+    - Starts the JSX return statement to render the product list.
+
+26. `<div className="container mx-auto px-4 max-w-6xl">`
+    - Defines a centered container with 4 units padding and a maximum width of 6xl (1152px).
+
+27. `<h2 className="text-3xl font-bold mb-8 text-rose-700 text-center">`
+    - Renders a heading with 3xl text size, bold, rose color, 8-unit bottom margin, centered.
+
+28. `Our Featured Products`
+    - Text content of the heading.
+
+29. `</h2>`
+    - Closes the heading.
+
+30. `{loading ? (`
+    - Starts a ternary operator: if `loading` is `true`, show shimmer effects.
+
+31. `<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">`
+    - Creates a responsive grid: 1 column on small, 2 on medium, 3 on large screens, with 6-unit gaps.
+
+32. `{[...Array(6)].map((_, index) => (`
+    - Maps over an array of 6 items to create shimmer placeholders.
+
+33. `<ShimmerThumbnail key={index} height={350} width={300} rounded />`
+    - Renders a shimmer effect, 350px tall, 300px wide, with rounded corners, keyed by index.
+
+34. `))}`
+    - Closes the shimmer map.
+
+35. `</div>`
+    - Closes the shimmer grid.
+
+36. `) : products.length === 0 ? (`
+    - Continues the ternary: if not loading and no products, show a message.
+
+37. `<p className="text-gray-500 text-center text-lg">No products found.</p>`
+    - Displays a gray, large, centered message when no products are available.
+
+38. `) : (`
+    - Else block: if not loading and products exist, show the product list.
+
+39. `<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">`
+    - Creates a responsive grid for products: 1 column on small, 2 on medium, 3 on large, with 6-unit gaps.
+
+40. `{products.map((product) => (`
+    - Maps over the `products` array to render each product.
+
+41. `<div`
+    - Starts a div for each product card.
+
+42. `key={product.id}`
+    - Sets a unique key for React using the product’s ID.
+
+43. `className="bg-white p-4 rounded-xl shadow-sm hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300"`
+    - Styles the card: white background, 4-unit padding, extra-large rounded corners, small shadow, larger shadow on hover, slight lift on hover, 300ms transition.
+
+44. `>`
+    - Opens the product card content.
+
+45. `<div className="relative overflow-hidden rounded-lg mb-3 group">`
+    - Defines a container for the image with hidden overflow, large rounded corners, 3-unit bottom margin, and `group` for hover effects.
+
+46. `<img`
+    - Starts an image element for the product.
+
+47. `src={product.image}`
+    - Sets the image source to the product’s image URL.
+
+48. `alt={product.name}`
+    - Sets the alt text to the product’s name for accessibility.
+
+49. `className="w-full h-60 object-contain hover:scale-105 transition-transform duration-300"`
+    - Styles the image: full width, 60 units (240px) height, contained object fit, scales up slightly on hover, 300ms transform transition.
+
+50. `/>`
+    - Closes the image element.
+
+51. `<div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />`
+    - Adds a swipe effect: gradient from transparent to semi-white, starts off-screen left, moves right on hover, 1000ms transition with easing.
+
+52. `</div>`
+    - Closes the image container.
+
+53. `<h3 className="flex-auto text-lg font-semibold text-slate-900">{product.name}</h3>`
+    - Renders the product name in a large, bold, slate-colored heading that flexes to fill space.
+
+54. `<div className="flex items-center mb-2">`
+    - Creates a flex container for the category with centered items and 2-unit bottom margin.
+
+55. `<span className="w-full flex-none text-sm font-medium text-slate-700 mt-2">`
+    - Renders the category in a small, medium-weight, slate-colored span, full width, no flex growth, 2-unit top margin.
+
+56. `{product.category}`
+    - Displays the product’s category.
+
+57. `</span>`
+    - Closes the category span.
+
+58. `</div>`
+    - Closes the category container.
+
+59. `<p className="text-lg font-semibold text-slate-500">`
+    - Starts a paragraph for the price, large, bold, slate-colored.
+
+60. `GHS {product.price.toFixed(2)}`
+    - Shows the price in GHS currency, fixed to 2 decimal places.
+
+61. `</p>`
+    - Closes the price paragraph.
+
+62. `<button`
+    - Starts an "Add to Cart" button.
+
+63. `onClick={() => handleButtonClick(product.id, product.name)}`
+    - Calls `handleButtonClick` with the product’s ID and name when clicked.
+
+64. `disabled={loadingStates[product.id]}`
+    - Disables the button if the product’s loading state is `true`.
+
+65. `className="w-full bg-rose-700 text-white py-2 rounded-lg hover:bg-rose-900 transform hover:scale-[1.02] transition-all duration-300 font-semibold"`
+    - Styles the button: full width, rose background, white text, 2-unit y-padding, rounded, darker rose on hover, slight scale on hover, 300ms transition, bold.
+
+66. `>`
+    - Opens the button content.
+
+67. `{loadingStates[product.id] ? (`
+    - Starts a ternary: if the button is loading, show a spinner.
+
+68. `<svg className="animate-spin h-5 w-5 mr-2 inline" viewBox="0 0 24 24">`
+    - Renders a spinning SVG, 5x5 units, 2-unit right margin, inline with text.
+
+69. `<circle`
+    - Starts a circle for the spinner’s background.
+
+70. `className="opacity-25"`
+    - Sets the circle’s opacity to 25%.
+
+71. `cx="12"`
+    - Centers the circle horizontally at 12 units.
+
+72. `cy="12"`
+    - Centers the circle vertically at 12 units.
+
+73. `r="10"`
+    - Sets the circle’s radius to 10 units.
+
+74. `stroke="currentColor"`
+    - Uses the current text color for the stroke.
+
+75. `strokeWidth="4"`
+    - Sets the stroke width to 4 units.
+
+76. `fill="none"`
+    - Ensures the circle has no fill.
+
+77. `/>`
+    - Closes the circle (self-closing).
+
+78. `<path`
+    - Starts a path for the spinner’s animated portion.
+
+79. `className="opacity-75"`
+    - Sets the path’s opacity to 75%.
+
+80. `fill="currentColor"`
+    - Fills the path with the current text color.
+
+81. `d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"`
+    - Defines the path’s shape for the spinning effect.
+
+82. `/>`
+    - Closes the path (self-closing).
+
+83. `</svg>`
+    - Closes the spinner SVG.
+
+84. `) : 'Add to Cart'}`
+    - Ends the ternary: shows "Add to Cart" text if not loading.
+
+85. `</button>`
+    - Closes the "Add to Cart" button.
+
+86. `</div>`
+    - Closes the product card.
+
+87. `))}`
+    - Closes the product map.
+
+88. `</div>`
+    - Closes the product grid.
+
+89. `)}`
+    - Closes the outer ternary operator.
+
+90. `</div>`
+    - Closes the outer container.
+
+91. `);`
+    - Closes the JSX return statement.
+
+92. `};`
+    - Closes the `ProductList` component.
+
+93. `export default ProductList;`
+    - Exports the `ProductList` component as the default export.
 
 ---
 
-### Notes: `src/index.css`
+### Notes: `src/components/Cart.jsx`
+- **Purpose**: Displays cart items, calculates totals, and handles clearing or placing orders with updated styles.
 
-- **Purpose**: Defines Tailwind directives for generating styles in `output.css`.
+1. `import React from 'react';`
+   - Imports React for component functionality.
 
-1. `@tailwind base;`
-   - Includes Tailwind’s base styles (e.g., resets).
+2. `import toast from 'react-hot-toast';`
+   - Imports `toast` from `react-hot-toast` for success notifications.
 
-2. `@tailwind components;`
-   - Includes Tailwind’s component styles (empty here but reserved).
+3. `const Cart = ({ cart, products, clearCart, placeOrder }) => {`
+   - Defines the `Cart` component with props: `cart` (items), `products` (all products), `clearCart` (function), `placeOrder` (function).
 
-3. `@tailwind utilities;`
-   - Includes Tailwind’s utility classes (e.g., `bg-teal-600`, `text-white`).
+4. `const getTotal = () => {`
+   - Defines a function to calculate the total cost of items in the cart.
+
+5. `return cart.reduce((sum, item) => {`
+   - Uses `reduce` to sum up the cost of all cart items, starting from 0.
+
+6. `const product = products.find((p) => p.id === item.productId);`
+   - Finds the product in the `products` array matching the cart item’s `productId`.
+
+7. `return sum + (product?.price * item.quantity || 0);`
+   - Adds the item’s cost (price × quantity) to the sum, defaults to 0 if product is missing (optional chaining).
+
+8. `}, 0);`
+   - Sets the initial value of the `reduce` to 0 and closes the reducer.
+
+9. `};`
+   - Closes the `getTotal` function.
+
+10. `const handleClearCart = () => {`
+    - Defines a function to clear the cart and show a notification.
+
+11. `clearCart();`
+    - Calls the `clearCart` prop function to send a `DELETE` request to `server.js`.
+
+12. `toast.success('Cart cleared', {`
+    - Displays a success toast with the message "Cart cleared".
+
+13. `duration: 3000,`
+    - Sets the toast duration to 3 seconds.
+
+14. `position: 'top-center',`
+    - Positions the toast at the top center of the screen.
+
+15. `style: {`
+    - Starts a style object for the toast.
+
+16. `border: '1px solid #fff400',`
+    - Adds a 1px yellow border to the toast.
+
+17. `padding: '16px',`
+    - Sets 16px padding inside the toast.
+
+18. `background: '#c70039',`
+    - Sets the toast background to a dark rose color.
+
+19. `color: '#ffffff'`
+    - Sets the toast text color to white.
+
+20. `},`
+    - Closes the style object.
+
+21. `});`
+    - Closes the toast configuration.
+
+22. `};`
+    - Closes the `handleClearCart` function.
+
+23. `const handlePlaceOrder = () => {`
+    - Defines a function to place an order and show a notification.
+
+24. `placeOrder();`
+    - Calls the `placeOrder` prop function to send a `POST` request to `server.js`.
+
+25. `toast.success('Order placed successfully', {`
+    - Displays a success toast with the message "Order placed successfully".
+
+26. `duration: 3000,`
+    - Sets the toast duration to 3 seconds.
+
+27. `position: 'top-center',`
+    - Positions the toast at the top center of the screen.
+
+28. `style: {border: '1px solid #fff400',`
+    - Starts a style object with a 1px yellow border.
+
+29. `padding: '16px',`
+    - Sets 16px padding inside the toast.
+
+30. `background: '#c70039',`
+    - Sets the toast background to a dark rose color.
+
+31. `color: '#ffffff'`
+    - Sets the toast text color to white.
+
+32. `},`
+    - Closes the style object.
+
+33. `});`
+    - Closes the toast configuration.
+
+34. `};`
+    - Closes the `handlePlaceOrder` function.
+
+35. `const [loadingStates, setLoadingStates] = React.useState({`
+    - Declares a state object for button loading states using `useState`.
+
+36. `clearCart: false,`
+    - Initializes the `clearCart` loading state as `false` (not loading).
+
+37. `placeOrder: false,`
+    - Initializes the `placeOrder` loading state as `false` (not loading).
+
+38. `});`
+    - Closes the initial state object.
+
+39. `const handleButtonClick = async (action) => {`
+    - Defines an async function to handle button clicks with loading simulation.
+
+40. `setLoadingStates(prev => ({ ...prev, [action]: true }));`
+    - Updates the loading state to `true` for the specified action (`clearCart` or `placeOrder`).
+
+41. `await new Promise(resolve => setTimeout(resolve, 500));`
+    - Adds a 500ms delay to simulate an async operation.
+
+42. `if (action === 'clearCart') {`
+    - Checks if the action is "clearCart".
+
+43. `handleClearCart();`
+    - Calls `handleClearCart` if the condition is true.
+
+44. `} else {`
+    - Else block for the "placeOrder" action.
+
+45. `handlePlaceOrder();`
+    - Calls `handlePlaceOrder` for the "placeOrder" action.
+
+46. `}`
+    - Closes the if-else block.
+
+47. `setLoadingStates(prev => ({ ...prev, [action]: false }));`
+    - Resets the loading state to `false` for the specified action.
+
+48. `};`
+    - Closes the `handleButtonClick` function.
+
+49. `return (`
+    - Starts the JSX return statement to render the cart.
+
+50. `<div className="bg-white p-6 rounded-lg shadow-md mb-6">`
+    - Defines a container with white background, 6-unit padding, rounded corners, medium shadow, 6-unit bottom margin.
+
+51. `<h2 className="text-xl font-semibold mb-4 text-rose-700">Your Cart</h2>`
+    - Renders a heading with extra-large text, bold, rose color, 4-unit bottom margin.
+
+52. `{cart.length === 0 ? (`
+    - Starts a ternary operator: if the cart is empty, show a message.
+
+53. `<p className="text-gray-500">Your cart is empty</p>`
+    - Displays a gray message when the cart has no items.
+
+54. `) : (`
+    - Else block: if the cart has items, show the cart contents.
+
+55. `<>`
+    - Starts a fragment to group multiple elements without adding an extra node.
+
+56. `{cart.map((item) => {`
+    - Maps over the `cart` array to render each item.
+
+57. `const product = products.find((p) => p.id === item.productId);`
+    - Finds the product matching the cart item’s `productId` from the `products` array.
+
+58. `return (`
+    - Starts the return statement for each cart item’s JSX.
+
+59. `<div key={item.productId} className="border-b py-2 flex items-center">`
+    - Defines a div for the cart item with a bottom border, 2-unit y-padding, flex layout, and centered items, keyed by `productId`.
+
+60. `<img`
+    - Starts an image element for the cart item.
+
+61. `src={product?.image}`
+    - Sets the image source to the product’s image URL, with optional chaining for safety.
+
+62. `alt={product?.name}`
+    - Sets the alt text to the product’s name, with optional chaining.
+
+63. `className="w-16 h-16 object-contain rounded mr-2"`
+    - Styles the image: 16 units (64px) width and height, contained object fit, rounded corners, 2-unit right margin.
+
+64. `/>`
+    - Closes the image element.
+
+65. `<div>`
+    - Starts a div for the cart item details.
+
+66. `<p className="text-gray-800">{product?.name}</p>`
+    - Displays the product name in a gray paragraph, with optional chaining.
+
+67. `<p className="text-sm text-gray-600">`
+    - Starts a paragraph for quantity and price, small text size, gray color.
+
+68. `{item.quantity} x GHS {product?.price.toFixed(2)} = GHS {(product?.price * item.quantity).toFixed(2)}`
+    - Shows the quantity, unit price (fixed to 2 decimals), and total item cost, with optional chaining.
+
+69. `</p>`
+    - Closes the quantity/price paragraph.
+
+70. `</div>`
+    - Closes the item details div.
+
+71. `);`
+    - Closes the return statement for the cart item.
+
+72. `})}`
+    - Closes the cart map.
+
+73. `<p className="font-bold text-lg mt-4">Total: GHS {getTotal().toFixed(2)}</p>`
+    - Displays the cart total in a bold, large paragraph with 4-unit top margin, fixed to 2 decimals.
+
+74. `<div className="mt-4 space-y-2">`
+    - Creates a container for buttons with 4-unit top margin and 2-unit vertical spacing.
+
+75. `<button`
+    - Starts a "Clear Cart" button.
+
+76. `onClick={() => handleButtonClick('clearCart')}`
+    - Calls `handleButtonClick` with "clearCart" when clicked.
+
+77. `disabled={loadingStates.clearCart}`
+    - Disables the button if `clearCart` is loading.
+
+78. `className="w-full bg-rose-700 text-white py-2 rounded-lg hover:bg-rose-900 transform hover:scale-[1.02] transition-all duration-300 font-semibold"`
+    - Styles the button: full width, rose background, white text, 2-unit y-padding, rounded, darker rose on hover, slight scale on hover, 300ms transition, bold.
+
+79. `>`
+    - Opens the button content.
+
+80. `{loadingStates.clearCart ? (`
+    - Starts a ternary: if `clearCart` is loading, show a spinner.
+
+81. `<svg className="animate-spin h-5 w-5 mr-2 inline" viewBox="0 0 24 24">`
+    - Renders a spinning SVG, 5x5 units, 2-unit right margin, inline with text.
+
+82. `<circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />`
+    - Renders a circle for the spinner’s background, 25% opacity, centered, 10-unit radius, current color stroke, 4-unit width, no fill.
+
+83. `<path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />`
+    - Renders a path for the spinner’s animated portion, 75% opacity, filled with current color, defines the spinning shape.
+
+84. `</svg>`
+    - Closes the spinner SVG.
+
+85. `) : 'Clear Cart'}`
+    - Ends the ternary: shows "Clear Cart" text if not loading.
+
+86. `</button>`
+    - Closes the "Clear Cart" button.
+
+87. `<button`
+    - Starts a "Place Order" button.
+
+88. `onClick={() => handleButtonClick('placeOrder')}`
+    - Calls `handleButtonClick` with "placeOrder" when clicked.
+
+89. `disabled={loadingStates.placeOrder}`
+    - Disables the button if `placeOrder` is loading.
+
+90. `className="w-full bg-teal-700 text-white py-2 rounded-lg hover:bg-teal-900 transform hover:scale-[1.02] transition-all duration-300 font-semibold"`
+    - Styles the button: full width, teal background, white text, 2-unit y-padding, rounded, darker teal on hover, slight scale on hover, 300ms transition, bold.
+
+91. `>`
+    - Opens the button content.
+
+92. `{loadingStates.placeOrder ? (`
+    - Starts a ternary: if `placeOrder` is loading, show a spinner.
+
+93. `<svg className="animate-spin h-5 w-5 mr-2 inline" viewBox="0 0 24 24">`
+    - Renders a spinning SVG, 5x5 units, 2-unit right margin, inline with text.
+
+94. `<circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />`
+    - Renders a circle for the spinner’s background, 25% opacity, centered, 10-unit radius, current color stroke, 4-unit width, no fill.
+
+95. `<path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />`
+    - Renders a path for the spinner’s animated portion, 75% opacity, filled with current color, defines the spinning shape.
+
+96. `</svg>`
+    - Closes the spinner SVG.
+
+97. `) : 'Place Order'}`
+    - Ends the ternary: shows "Place Order" text if not loading.
+
+98. `</button>`
+    - Closes the "Place Order" button.
+
+99. `</div>`
+    - Closes the button container.
+
+100. `</>`
+     - Closes the fragment.
+
+101. `)}`
+     - Closes the outer ternary operator.
+
+102. `</div>`
+     - Closes the cart container.
+
+103. `);`
+     - Closes the JSX return statement.
+
+104. `};`
+     - Closes the `Cart` component.
+
+105. `export default Cart;`
+     - Exports the `Cart` component as the default export.
 
 ---
 
-### Notes: `tailwind.config.js`
+### Notes: `src/components/Orders.jsx`
+- **Purpose**: Displays past orders with product details and totals, styled with rose colors.
 
-- **Purpose**: Configures Tailwind to scan your files and generate CSS.
+1. `import React from 'react';`
+   - Imports React for component functionality.
 
-1. `/** @type {import('tailwindcss').Config} */`
-   - Type annotation for Tailwind config.
+2. `const Orders = ({ orders, products }) => {`
+   - Defines the `Orders` component with props: `orders` (array of past orders), `products` (array of all products).
 
-2. `export default {`
-   - Exports config object as default.
+3. `return (`
+   - Starts the JSX return statement to render the orders.
 
-3. `content: ["./src/**/*.{js,jsx}"],`
-   - Specifies files to scan for Tailwind classes (all `.js` and `.jsx` in `src/`).
+4. `<div className="bg-white p-6 rounded-lg shadow-md">`
+   - Defines a container with white background, 6-unit padding, rounded corners, and medium shadow.
 
-4. `theme: { extend: {} },`
-   - Allows extending Tailwind’s theme (empty here).
+5. `<h2 className="text-xl font-semibold mb-4 text-rose-700">Your Orders</h2>`
+   - Renders a heading with extra-large text, bold, rose color, 4-unit bottom margin.
 
-5. `plugins: [],`
-   - Lists Tailwind plugins (none here).
+6. `{orders.length === 0 ? (`
+   - Starts a ternary operator: if no orders exist, show a message.
 
-6. `}`
-   - Closes config.
+7. `<p className="text-gray-500">No orders yet</p>`
+   - Displays a gray message when there are no orders.
+
+8. `) : (`
+   - Else block: if orders exist, show the order list.
+
+9. `orders.map((order) => (`
+   - Maps over the `orders` array to render each order.
+
+10. `<div key={order.orderId} className="border-b py-2 last:border-b-0">`
+    - Defines a div for each order, keyed by `orderId`, with a bottom border, 2-unit y-padding, no border on the last item.
+
+11. `<p className="font-semibold text-gray-800">Order #{order.orderId}</p>`
+    - Displays the order number in a bold, gray paragraph.
+
+12. `{order.items.map((item) => {`
+    - Maps over the items in the order to render each item’s details.
+
+13. `const product = products.find((p) => p.id === item.productId);`
+    - Finds the product matching the item’s `productId` from the `products` array.
+
+14. `return (`
+    - Starts the return statement for each item’s JSX.
+
+15. `<div key={item.productId} className="flex items-center text-sm text-gray-600">`
+    - Defines a div for the item, keyed by `productId`, with flex layout, centered items, small gray text.
+
+16. `<img`
+    - Starts an image element for the item.
+
+17. `src={product?.image}`
+    - Sets the image source to the product’s image URL, with optional chaining for safety.
+
+18. `alt={product?.name}`
+    - Sets the alt text to the product’s name, with optional chaining.
+
+19. `className="w-12 h-12 object-contain rounded mr-2"`
+    - Styles the image: 12 units (48px) width and height, contained object fit, rounded corners, 2-unit right margin.
+
+20. `/>`
+    - Closes the image element.
+
+21. `<p>`
+    - Starts a paragraph for the item details.
+
+22. `{product?.name} - {item.quantity} x GHS {item.price.toFixed(2)} = GHS {(item.quantity * item.price).toFixed(2)}`
+    - Displays the product name, quantity, unit price (fixed to 2 decimals), and total cost.
+
+23. `</p>`
+    - Closes the item details paragraph.
+
+24. `);`
+    - Closes the return statement for the item.
+
+25. `})}`
+    - Closes the item map.
+
+26. `<p className="font-bold text-rose-700 mt-2">Total: GHS {order.total.toFixed(2)}</p>`
+    - Displays the order total in a bold, rose-colored paragraph with 2-unit top margin, fixed to 2 decimals.
+
+27. `</div>`
+    - Closes the order div.
+
+28. `))`
+    - Closes the order map.
+
+29. `)}`
+    - Closes the outer ternary operator.
+
+30. `</div>`
+    - Closes the orders container.
+
+31. `);`
+    - Closes the JSX return statement.
+
+32. `};`
+    - Closes the `Orders` component.
+
+33. `export default Orders;`
+    - Exports the `Orders` component as the default export.
 
 ---
 
-### Notes Summary
-- **`server.js`**: Backend with in-memory storage and HTTP endpoints.
-- **`src/components/Cart.jsx`**: Shows cart items, totals, and buttons with loading states.
-- **`src/components/Orders.jsx`**: Displays order history with product details.
-- **`src/components/ProductList.jsx`**: Lists products with images, interactive buttons, and shimmer effects.
-- **`src/App.jsx`**: Manages state, fetches data from `server.js`, renders UI with a hero, and controls shimmer with a 2-second delay.
-- **`src/index.jsx`**: Renders the app with compiled CSS (`output.css`).
-- **`src/index.css`**: Tailwind directives for building `output.css`.
-- **`tailwind.config.js`**: Configures Tailwind to process your JSX files.
-
-These notes match your working codebase with CSS fixed via `output.css`. Copy them into your notes app, and you’re all set! Let me know if you need anything else.
+### Summary
+These notes cover every line of your updated `App.jsx`, `ProductList.jsx`, `Cart.jsx`, and `Orders.jsx`, explaining their purpose and styling. They reflect your changes like the video hero in `App.jsx`, hover swipe in `ProductList.jsx`, and updated rose/teal colors across the files. If you need notes for other files (`server.js`, `index.jsx`, etc.) or further adjustments, let me know!
